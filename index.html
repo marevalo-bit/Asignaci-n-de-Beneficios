@@ -357,9 +357,6 @@
                 KPI01 · Ficha A-FOR-GSBC-0303
               </span>
             </div>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block">
-              Efectividad de Beneficios Otorgados por Concurso de Becas | Meta ≥ 70% | Directores de Sede
-            </p>
           </div>
         </div>
       </div>
@@ -396,37 +393,40 @@
   </header>
 
   <!-- 4. CONTENEDOR PRINCIPAL DEL MÓDULO -->
-  <div class="w-full max-w-[98%] 2xl:max-w-[96%] mx-auto px-2 sm:px-4 lg:px-6 space-y-5">
+  <div class="w-full max-w-[98%] 2xl:max-w-[96%] mx-auto px-2 sm:px-4 lg:px-6 space-y-4">
     
-    <!-- BANNER DE CONTEXTO RÁPIDO & STATUS -->
-    <div class="glass-panel p-3 sm:p-4 flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
-      <div class="flex items-center gap-3 w-full md:w-auto">
-        <div class="w-10 h-10 rounded-xl bg-blue-600/10 dark:bg-blue-400/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg font-bold border border-blue-500/20">
-          <i class="fa-solid fa-bullseye"></i>
-        </div>
-        <div>
-          <div class="font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-            <span>Objetivo del KPI:</span>
-            <span class="text-emerald-600 dark:text-emerald-400 font-black">Conversión de Ganadores a Matrículas Formalizadas</span>
-          </div>
-          <p class="text-slate-600 dark:text-slate-300 text-[11.5px]">
-            <strong>Fórmula:</strong> (N.° de becados matriculados / N.° total de becas otorgadas) × 100 &nbsp;|&nbsp; 
-            <strong>Responsable:</strong> Director Zonal &nbsp;|&nbsp; <strong>Evaluados:</strong> Directores de Sede
-          </p>
-        </div>
+    <!-- BANNER DE CONTEXTO RÁPIDO & STATUS (ESTILO CHIPS COMPACTO) -->
+    <div class="glass-panel p-2.5 sm:px-4 flex flex-wrap items-center justify-between gap-2 text-xs">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20">
+          <i class="fa-solid fa-diagram-project text-blue-500"></i>
+          <strong>Proceso:</strong> Asignación de Beneficios
+        </span>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-500/10 text-slate-700 dark:text-slate-300 border border-slate-500/20">
+          <i class="fa-solid fa-calculator text-slate-500"></i>
+          <strong>Fórmula:</strong> (Becados Matriculados / Total Becas) × 100
+        </span>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-500/20">
+          <i class="fa-solid fa-user-tie text-indigo-500"></i>
+          <strong>Responsable:</strong> Director Zonal
+        </span>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-500/20">
+          <i class="fa-solid fa-users-gear text-purple-500"></i>
+          <strong>Evaluado:</strong> Directores de Sede
+        </span>
       </div>
 
-      <div class="flex items-center gap-2 flex-wrap">
-        <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      <div class="flex items-center gap-1.5 flex-wrap">
+        <span class="px-2.5 py-0.5 rounded-lg text-[10.5px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
           Óptimo: ≥ 70%
         </span>
-        <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+        <span class="px-2.5 py-0.5 rounded-lg text-[10.5px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
           Aceptable: 50% - 69%
         </span>
-        <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-red-500/15 text-red-700 dark:text-red-300 border border-red-500/30 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-red-500"></span>
+        <span class="px-2.5 py-0.5 rounded-lg text-[10.5px] font-bold bg-red-500/15 text-red-700 dark:text-red-300 border border-red-500/30 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
           Crítico: &lt; 50%
         </span>
       </div>
@@ -966,139 +966,171 @@
   <!-- ==========================================
        MODAL 1: FICHA TÉCNICA DEL KPI (A-FOR-GSBC-0303)
   ========================================== -->
-  <div id="modal-ficha" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 hidden">
+  <div id="modal-ficha" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 hidden">
     <div class="modal-overlay fixed inset-0" onclick="closeModalFicha()"></div>
     
-    <div class="glass-card max-w-3xl w-full max-h-[90vh] overflow-y-auto p-5 sm:p-7 z-10 border border-white/80 shadow-2xl relative">
+    <div class="glass-card max-w-6xl w-[98vw] 2xl:w-[92vw] max-h-[94vh] overflow-y-auto p-3 sm:p-5 z-10 border border-white/80 shadow-2xl relative">
       
-      <!-- Botón Cerrar -->
-      <button onclick="closeModalFicha()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-200/60 dark:bg-slate-700/60 text-slate-700 dark:text-slate-200 flex items-center justify-center hover:bg-slate-300">
-        <i class="fa-solid fa-xmark"></i>
+      <!-- Botón Cerrar Superior -->
+      <button onclick="closeModalFicha()" class="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 w-7 h-7 rounded-full bg-slate-200/80 dark:bg-slate-700/80 text-slate-700 dark:text-slate-200 flex items-center justify-center hover:bg-slate-300 dark:hover:bg-slate-600 transition-all z-20" title="Cerrar Ficha">
+        <i class="fa-solid fa-xmark text-sm"></i>
       </button>
 
-      <!-- Cabecera Oficial Ficha -->
-      <div class="border-b-2 border-blue-600 pb-3 mb-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div style="padding: 3px 10px; border-radius: 6px; background-color: #FFE001; font-weight: 900; color: #1e3a8a; font-size: 13px;">
-            VONEX
-          </div>
-          <div>
-            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">FORMATO OFICIAL</span>
-            <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100">FICHA DE KPI</h2>
-          </div>
-        </div>
-        <div class="text-right text-[11px] font-bold text-slate-600 dark:text-slate-400">
-          <div>Código: <span class="text-blue-600 font-extrabold">A-FOR-GSBC-0303</span></div>
-          <div>Versión: 01 | Act: 27/08/2026</div>
-        </div>
-      </div>
-
-      <!-- Cuerpo Ficha Técnica -->
-      <div class="space-y-4 text-xs">
+      <!-- FORMATO OFICIAL TABULAR HORIZONTAL (IDÉNTICO A IMAGEN 1) -->
+      <div class="border-2 border-slate-700 dark:border-slate-600 rounded-lg overflow-hidden bg-white dark:bg-slate-900 shadow-sm text-xs">
         
-        <!-- Proceso -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
-          <div class="font-extrabold text-slate-500 uppercase text-[10.5px]">PROCESO:</div>
-          <div class="sm:col-span-2 font-black text-slate-900 dark:text-slate-100 text-sm">ASIGNACIÓN DE BENEFICIOS</div>
-        </div>
+        <!-- 1. FILA DE CABECERA INSTITUCIONAL -->
+        <div class="grid grid-cols-12 border-b border-slate-700 dark:border-slate-600 divide-x divide-slate-700 dark:divide-slate-600 bg-slate-50 dark:bg-slate-800/80 items-stretch">
+          
+          <!-- Logo Vonex -->
+          <div class="col-span-12 sm:col-span-3 p-2.5 flex items-center justify-center bg-[#FFE001]">
+            <span class="font-black text-lg tracking-tighter text-[#1e3a8a]">VONEX</span>
+          </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
-          <div class="font-extrabold text-slate-500 uppercase text-[10.5px]">FINALIDAD DEL PROCESO:</div>
-          <div class="sm:col-span-2 text-slate-700 dark:text-slate-300 leading-relaxed">
-            Gestionar la asignación de beneficios de estudios mediante criterios académicos, socioeconómicos, comerciales e institucionales, promoviendo el acceso, la permanencia y la excelencia educativa de los estudiantes.
+          <!-- Título Formato -->
+          <div class="col-span-12 sm:col-span-6 p-2.5 text-center flex flex-col justify-center bg-blue-50/70 dark:bg-blue-950/40">
+            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">FORMATO</span>
+            <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 tracking-tight">FICHA DE KPI</h2>
+          </div>
+
+          <!-- Código y Versión -->
+          <div class="col-span-12 sm:col-span-3 p-2 text-right flex flex-col justify-center text-[10.5px] font-bold text-slate-700 dark:text-slate-300 bg-slate-100/70 dark:bg-slate-800">
+            <div class="font-black text-blue-700 dark:text-blue-400">A-FOR-GSBC-0303</div>
+            <div>Versión: 01</div>
+            <div class="text-slate-500">Act: 27/08/2026</div>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
-          <div class="font-extrabold text-slate-500 uppercase text-[10.5px]">DUEÑO DEL PROCESO:</div>
-          <div class="sm:col-span-2 font-bold text-slate-900 dark:text-slate-100">Jefa de Ventas</div>
+        <!-- 2. BARRA PROCESO -->
+        <div class="bg-[#0b2545] text-white p-1.5 text-center font-black tracking-wider text-xs border-b border-slate-700 dark:border-slate-600">
+          PROCESO: ASIGNACIÓN DE BENEFICIOS
         </div>
 
-        <!-- KPI Info -->
-        <div class="p-4 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800">
-          <div class="flex justify-between items-center mb-1">
-            <span class="text-[11px] font-black uppercase text-blue-700 dark:text-blue-300">INDICADOR:</span>
-            <span class="px-2 py-0.5 rounded bg-blue-600 text-white font-extrabold text-[11px]">N° KPI01</span>
+        <!-- 3. FINALIDAD DEL PROCESO & DUEÑO -->
+        <div class="grid grid-cols-12 border-b border-slate-700 dark:border-slate-600 divide-y sm:divide-y-0 sm:divide-x divide-slate-700 dark:divide-slate-600">
+          <div class="col-span-12 sm:col-span-8 p-2.5 flex flex-col sm:flex-row gap-2 items-start">
+            <span class="font-extrabold uppercase text-[10px] sm:text-[11px] text-[#0b2545] dark:text-blue-300 min-w-[145px]">FINALIDAD DEL PROCESO:</span>
+            <p class="text-slate-700 dark:text-slate-300 leading-snug text-[11px]">
+              Gestionar la asignación de beneficios de estudios mediante criterios académicos, socioeconómicos, comerciales e institucionales, promoviendo el acceso, la permanencia y la excelencia educativa de los estudiantes.
+            </p>
           </div>
-          <h3 class="font-black text-sm text-slate-900 dark:text-slate-100">
-            PORCENTAJE DE EFECTIVIDAD DE LOS BENEFICIOS OTORGADOS POR CONCURSO DE BECAS
-          </h3>
-          <p class="text-[11.5px] text-slate-600 dark:text-slate-300 mt-1">
-            <strong>Finalidad del KPI:</strong> Medir el porcentaje de beneficiarios que formalizan su matrícula luego de la publicación de resultados.
+          <div class="col-span-12 sm:col-span-4 p-2.5 flex items-center justify-between sm:justify-start gap-2 bg-slate-50/60 dark:bg-slate-800/40">
+            <span class="font-extrabold uppercase text-[10px] sm:text-[11px] text-[#0b2545] dark:text-blue-300">DUEÑO DEL PROCESO:</span>
+            <span class="font-bold text-slate-900 dark:text-slate-100 text-xs">Jefa de Ventas</span>
+          </div>
+        </div>
+
+        <!-- 4. BARRA KPI -->
+        <div class="bg-[#0b2545] text-white px-3 py-1.5 flex items-center justify-between border-b border-slate-700 dark:border-slate-600">
+          <div class="font-black text-xs tracking-tight">
+            KPI: PORCENTAJE DE EFECTIVIDAD DE LOS BENEFICIOS OTORGADOS POR CONCURSO DE BECAS
+          </div>
+          <div class="font-black text-xs px-2 py-0.5 rounded bg-blue-600 text-white">
+            N° KPI01
+          </div>
+        </div>
+
+        <!-- 5. FINALIDAD DEL KPI -->
+        <div class="p-2.5 border-b border-slate-700 dark:border-slate-600 flex flex-col sm:flex-row gap-2 items-start bg-blue-50/30 dark:bg-blue-950/20">
+          <span class="font-extrabold uppercase text-[10px] sm:text-[11px] text-[#0b2545] dark:text-blue-300 min-w-[145px]">FINALIDAD DEL KPI:</span>
+          <p class="text-slate-700 dark:text-slate-300 text-[11px]">
+            Medir el porcentaje de beneficiarios que formalizan su matrícula luego de la publicación de resultados.
           </p>
         </div>
 
-        <!-- Cuadrícula de Métricas -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-          <div class="p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
-            <span class="text-[10px] font-bold text-slate-500 uppercase block">META</span>
-            <span class="text-sm font-black text-emerald-600 dark:text-emerald-400">≥ 70%</span>
+        <!-- 6. CÁLCULO & META -->
+        <div class="grid grid-cols-12 border-b border-slate-700 dark:border-slate-600 divide-y sm:divide-y-0 sm:divide-x divide-slate-700 dark:divide-slate-600 items-center">
+          <div class="col-span-12 sm:col-span-8 p-2.5 flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+            <span class="font-extrabold uppercase text-[10px] sm:text-[11px] text-[#0b2545] dark:text-blue-300 min-w-[80px]">CÁLCULO:</span>
+            <span class="font-mono font-bold text-slate-800 dark:text-slate-200 text-[11px] bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded border border-slate-300 dark:border-slate-700">
+              (N.° de becados matriculados tipo "X" / N.° total de becas otorgadas tipo "X") × 100
+            </span>
           </div>
-          <div class="p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
-            <span class="text-[10px] font-bold text-slate-500 uppercase block">UNIDAD</span>
-            <span class="text-sm font-black text-slate-800 dark:text-slate-200">Porcentaje (%)</span>
-          </div>
-          <div class="p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
-            <span class="text-[10px] font-bold text-slate-500 uppercase block">PERIODICIDAD</span>
-            <span class="text-sm font-black text-slate-800 dark:text-slate-200">Por convocatoria</span>
-          </div>
-          <div class="p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
-            <span class="text-[10px] font-bold text-slate-500 uppercase block">TIPO</span>
-            <span class="text-sm font-black text-blue-600 dark:text-blue-400">Eficacia</span>
+          <div class="col-span-12 sm:col-span-4 p-2.5 flex items-center justify-between sm:justify-start gap-3 bg-emerald-50/70 dark:bg-emerald-950/30">
+            <span class="font-extrabold uppercase text-[10px] sm:text-[11px] text-[#0b2545] dark:text-blue-300">META:</span>
+            <span class="text-sm font-black text-emerald-700 dark:text-emerald-400 px-2.5 py-0.5 rounded bg-emerald-200/60 dark:bg-emerald-900/60 border border-emerald-400">
+              &ge; 70%
+            </span>
           </div>
         </div>
 
-        <!-- Fórmula -->
-        <div class="p-3 rounded-xl bg-slate-100/90 dark:bg-slate-800/90 font-mono text-center font-bold text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700">
-          CÁLCULO: (N.° de becados matriculados tipo "X" / N.° total de becas otorgadas tipo "X") × 100
-        </div>
-
-        <!-- Roles -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <div class="p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
-            <span class="text-[10px] font-extrabold text-slate-500 uppercase block">RESPONSABLE DEL KPI:</span>
-            <span class="font-bold text-slate-900 dark:text-slate-100">Director Zonal</span>
-            <p class="text-[10px] text-slate-500 mt-0.5">Asegura que se cumpla el KPI</p>
+        <!-- 7. UNIDAD, PERIODICIDAD Y TIPO -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 border-b border-slate-700 dark:border-slate-600 divide-y sm:divide-y-0 sm:divide-x divide-slate-700 dark:divide-slate-600 bg-slate-50/80 dark:bg-slate-800/60 text-center">
+          <div class="p-2">
+            <span class="font-extrabold uppercase text-[10px] text-[#0b2545] dark:text-blue-300 block">UNIDAD DE MEDIDA:</span>
+            <span class="font-bold text-slate-900 dark:text-slate-100 text-[11.5px]">Porcentaje (%)</span>
           </div>
-          <div class="p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
-            <span class="text-[10px] font-extrabold text-slate-500 uppercase block">PROCESADOR INFO:</span>
-            <span class="font-bold text-slate-900 dark:text-slate-100">Gestión de Procesos Vonex</span>
-            <p class="text-[10px] text-slate-500 mt-0.5">Calcula KPI y emite alertas</p>
+          <div class="p-2">
+            <span class="font-extrabold uppercase text-[10px] text-[#0b2545] dark:text-blue-300 block">PERIODICIDAD:</span>
+            <span class="font-bold text-slate-900 dark:text-slate-100 text-[11.5px]">Por convocatoria</span>
           </div>
-          <div class="p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
-            <span class="text-[10px] font-extrabold text-slate-500 uppercase block">EVALUADO:</span>
-            <span class="font-bold text-slate-900 dark:text-slate-100">Directores de sede</span>
-            <p class="text-[10px] text-slate-500 mt-0.5">Ejecuta la actividad para lograr la meta</p>
+          <div class="p-2">
+            <span class="font-extrabold uppercase text-[10px] text-[#0b2545] dark:text-blue-300 block">TIPO:</span>
+            <span class="font-black text-blue-700 dark:text-blue-400 text-[11.5px]">Eficacia</span>
           </div>
         </div>
 
-        <!-- Semáforo Interpretación -->
-        <div class="p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70 space-y-1.5">
-          <span class="text-[10px] font-extrabold text-slate-500 uppercase block">RANGO E INTERPRETACIÓN:</span>
-          <div class="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
-            <i class="fa-solid fa-circle-check"></i>
-            <span><strong>Óptimo: ≥ 70%</strong> → La mayoría de los becados otorgados se matricula.</span>
+        <!-- 8. ROLES (RESPONSABLE, PROCESADOR, EVALUADO) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 border-b border-slate-700 dark:border-slate-600 divide-y sm:divide-y-0 sm:divide-x divide-slate-700 dark:divide-slate-600">
+          <div class="p-2.5">
+            <span class="font-extrabold uppercase text-[10px] text-[#0b2545] dark:text-blue-300 block">RESPONSABLE DEL KPI:</span>
+            <div class="font-bold text-slate-900 dark:text-slate-100 text-xs">Director Zonal</div>
+            <p class="text-[9.5px] text-slate-500 italic mt-0.5">Es el responsable de asegurar que se cumpla el KPI.</p>
           </div>
-          <div class="flex items-center gap-2 text-amber-700 dark:text-amber-300">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <span><strong>Aceptable: 50% – 69%</strong> → Existe una conversión moderada de becados a matriculados.</span>
+          <div class="p-2.5">
+            <span class="font-extrabold uppercase text-[10px] text-[#0b2545] dark:text-blue-300 block">PROCESADOR DE LA INFORMACIÓN:</span>
+            <div class="font-bold text-slate-900 dark:text-slate-100 text-xs">Gestión de Procesos Vonex</div>
+            <p class="text-[9.5px] text-slate-500 italic mt-0.5">Procesa y genera el cálculo del KPI, comunica alertas cuando aplique.</p>
           </div>
-          <div class="flex items-center gap-2 text-red-700 dark:text-red-300">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <span><strong>Crítico: &lt; 50%</strong> → Se evidencia una baja efectividad en la captación de los becados otorgados.</span>
+          <div class="p-2.5">
+            <span class="font-extrabold uppercase text-[10px] text-[#0b2545] dark:text-blue-300 block">EVALUADO:</span>
+            <div class="font-bold text-slate-900 dark:text-slate-100 text-xs">Directores de sede</div>
+            <p class="text-[9.5px] text-slate-500 italic mt-0.5">Responsable del llenado de los formatos, es quien ejecuta la actividad para lograr la meta establecida.</p>
           </div>
         </div>
 
-        <!-- Consideraciones -->
-        <div class="p-3 rounded-xl bg-amber-500/10 dark:bg-amber-400/10 border border-amber-500/20 text-slate-700 dark:text-slate-300 text-[11px] leading-relaxed">
-          <strong>CONSIDERACIONES (*):</strong> Solo se tomará en consideración la relación oficial de ganadores del concurso de becas remitida por el área de Soporte. Dicha información será contrastada con los registros de matrícula del área de Ventas para determinar la cantidad de becados que efectivamente se matricularon durante la campaña correspondiente.
+        <!-- 9. RANGO E INTERPRETACIÓN (SEMÁFORO) -->
+        <div class="p-2.5 border-b border-slate-700 dark:border-slate-600 bg-[#fefce8] dark:bg-amber-950/20 text-[11px] space-y-1">
+          <span class="font-extrabold uppercase text-[10.5px] text-[#0b2545] dark:text-blue-300 block">RANGO E INTERPRETACIÓN:</span>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 pt-0.5">
+            <div class="flex items-start gap-1.5 text-emerald-800 dark:text-emerald-300">
+              <span class="font-bold">✅ Óptimo: &ge; 70%</span>
+              <span class="text-[10.5px]">&rarr; La mayoría de los becados otorgados se matricula.</span>
+            </div>
+            <div class="flex items-start gap-1.5 text-amber-800 dark:text-amber-300">
+              <span class="font-bold">⚠️ Aceptable: 50% &ndash; 69%</span>
+              <span class="text-[10.5px]">&rarr; Existe una conversión moderada de becados.</span>
+            </div>
+            <div class="flex items-start gap-1.5 text-red-800 dark:text-red-300">
+              <span class="font-bold">❌ Crítico: &lt; 50%</span>
+              <span class="text-[10.5px]">&rarr; Baja efectividad en captación.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10. FUENTE -->
+        <div class="p-2.5 border-b border-slate-700 dark:border-slate-600 flex flex-col sm:flex-row gap-2 items-start">
+          <span class="font-extrabold uppercase text-[10px] sm:text-[11px] text-[#0b2545] dark:text-blue-300 min-w-[80px]">FUENTE:</span>
+          <p class="text-slate-700 dark:text-slate-300 text-[11px]">
+            Relación de ganadores del concurso de becas proporcionada por Soporte y reporte de matrículas del área de Ventas o sistema académico.
+          </p>
+        </div>
+
+        <!-- 11. CONSIDERACIONES -->
+        <div class="p-2.5 bg-slate-50 dark:bg-slate-800/40 flex flex-col sm:flex-row gap-2 items-start text-[10.5px]">
+          <span class="font-extrabold uppercase text-[10px] sm:text-[11px] text-[#0b2545] dark:text-blue-300 min-w-[145px]">CONSIDERACIONES (*):</span>
+          <p class="text-slate-600 dark:text-slate-300 leading-snug">
+            Solo se tomará en consideración la relación oficial de ganadores del concurso de becas remitida por el área de Soporte. Dicha información será contrastada con los registros de matrícula del área de Ventas para determinar la cantidad de becados que efectivamente se matricularon durante la campaña correspondiente.
+          </p>
         </div>
 
       </div>
 
-      <div class="mt-5 text-right">
-        <button onclick="closeModalFicha()" class="glass-pill glass-pill-active px-5 py-2">
-          Entendido
+      <!-- Botón de Cierre Inferior -->
+      <div class="mt-3 text-right">
+        <button onclick="closeModalFicha()" class="glass-pill glass-pill-active px-5 py-1.5 text-xs font-bold">
+          <i class="fa-solid fa-check"></i>
+          <span>Cerrar Ficha</span>
         </button>
       </div>
 
