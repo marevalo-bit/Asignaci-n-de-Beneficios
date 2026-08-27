@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tablero de Control - KPI01 Asignación de Beneficios | Vonex</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+
+  <!-- Chart.js & Plugins -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- ==========================================
+       ESTILOS DEL SISTEMA LIQUID GLASS
+  ========================================== -->
+  <style>
+    :root {
+      --c-primary: #2563eb;
+      --c-primary-hover: #1d4ed8;
+      --c-accent: #ffe001;
+      --c-emerald: #10b981;
+      --c-blue: #3b82f6;
+      --c-red: #ef4444;
+
+      /* FONDO BASE CLARO (PALETA AZUL ICE DEFAULT) */
+      --c-bg: #dbeafe;
+      --c-text: #0f172a;
+      --c-text-muted: #64748b;
+      --c-text-sub: #475569;
+
+      /* LIQUID GLASS CLARO */
+      --glass-header-bg: rgba(255, 255, 255, 0.55);
+      --glass-card-bg: rgba(255, 255, 255, 0.65);
+      --glass-card-border: rgba(255, 255, 255, 0.85);
+      --glass-card-shadow: 0 10px 30px 0 rgba(37, 99, 235, 0.08);
+      --glass-panel-bg: rgba(255, 255, 255, 0.5);
+
+      /* ORBES AZUL ICE */
+      --orb-1: rgba(147, 197, 253, 0.75);
+      --orb-2: rgba(191, 219, 254, 0.7);
+      --orb-3: rgba(224, 231, 255, 0.65);
+      --bg-grad-1: rgba(191, 219, 254, 0.5);
+      --bg-grad-2: rgba(224, 231, 255, 0.5);
+      --bg-grad-3: rgba(186, 230, 253, 0.5);
+    }
+
+    /* PALETA 2: FUCSIA SUAVE */
+    body[data-palette="fuchsia"] {
+      --c-primary: #db2777;
+      --c-primary-hover: #be185d;
+      --c-bg: #fdf2f8;
+      --glass-card-shadow: 0 10px 30px 0 rgba(219, 39, 119, 0.08);
+      --orb-1: rgba(244, 114, 182, 0.75);
+      --orb-2: rgba(232, 121, 249, 0.7);
+      --orb-3: rgba(192, 132, 252, 0.65);
+      --bg-grad-1: rgba(252, 231, 243, 0.6);
+      --bg-grad-2: rgba(243, 232, 255, 0.6);
+      --bg-grad-3: rgba(251, 207, 232, 0.55);
+    }
+
+    /* PALETA 3: AMARILLO VONEX PASTEL */
+    body[data-palette="butter"] {
+      --c-primary: #d97706;
+      --c-primary-hover: #b45309;
+      --c-bg: #fefce8;
+      --glass-card-shadow: 0 10px 30px 0 rgba(217, 119, 6, 0.08);
+      --orb-1: rgba(254, 240, 138, 0.85);
+      --orb-2: rgba(253, 230, 138, 0.75);
+      --orb-3: rgba(254, 215, 170, 0.7);
+      --bg-grad-1: rgba(254, 249, 195, 0.6);
+      --bg-grad-2: rgba(254, 243, 199, 0.6);
+      --bg-grad-3: rgba(255, 237, 213, 0.55);
+    }
+
+    /* MODO OSCURO (GLOBAL) */
+    body[data-theme="dark"] {
+      --c-bg: #090e1a;
+      --c-text: #f8fafc;
+      --c-text-muted: #94a3b8;
+      --c-text-sub: #cbd5e1;
+      --glass-header-bg: rgba(15, 23, 42, 0.65);
+      --glass-card-bg: rgba(30, 41, 59, 0.75);
+      --glass-card-border: rgba(255, 255, 255, 0.12);
+      --glass-card-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.45);
+      --glass-panel-bg: rgba(15, 23, 42, 0.65);
+      --orb-1: rgba(30, 58, 138, 0.55);
+      --orb-2: rgba(67, 56, 202, 0.48);
+      --orb-3: rgba(109, 40, 217, 0.42);
+      --bg-grad-1: rgba(30, 58, 138, 0.35);
+      --bg-grad-2: rgba(67, 56, 202, 0.35);
+      --bg-grad-3: rgba(15, 23, 42, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--c-bg);
+      background-image: 
+        radial-gradient(at 0% 0%, var(--bg-grad-1) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, var(--bg-grad-2) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, var(--bg-grad-3) 0px, transparent 50%);
+      color: var(--c-text);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.4s ease, color 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    /* ORBES FLOTANTES */
+    .blur-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -1;
+      opacity: 0.88;
+      pointer-events: none;
+      transition: background 0.6s ease;
+    }
+
+    .orb-a {
+      width: 65vw; height: 65vw;
+      max-width: 750px; max-height: 750px;
+      background: var(--orb-1);
+      top: -15%; right: -10%;
+      animation: floatOrbA 13s infinite ease-in-out alternate;
+    }
+
+    .orb-b {
+      width: 60vw; height: 60vw;
+      max-width: 650px; max-height: 650px;
+      background: var(--orb-2);
+      bottom: -15%; left: -10%;
+      animation: floatOrbB 15s infinite ease-in-out alternate;
+      animation-delay: -3s;
+    }
+
+    .orb-c {
+      width: 50vw; height: 50vw;
+      max-width: 520px; max-height: 520px;
+      background: var(--orb-3);
+      top: 30%; left: 25%;
+      animation: floatOrbC 11s infinite ease-in-out alternate;
+      animation-delay: -5s;
+    }
+
+    @keyframes floatOrbA {
+      0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      33% { transform: translate(-14%, 12%) scale(1.18) rotate(45deg); }
+      66% { transform: translate(10%, 18%) scale(0.92) rotate(90deg); }
+      100% { transform: translate(-8%, -10%) scale(1.12) rotate(135deg); }
+    }
+
+    @keyframes floatOrbB {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(16%, -14%) scale(1.15); }
+      66% { transform: translate(-12%, -8%) scale(0.88); }
+      100% { transform: translate(10%, 12%) scale(1.1); }
+    }
+
+    @keyframes floatOrbC {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-18%, -15%) scale(1.22); }
+      100% { transform: translate(15%, 15%) scale(0.85); }
+    }
+
+    /* HEADER GLASS */
+    .glass-header {
+      background: var(--glass-header-bg);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-bottom: 1px solid var(--glass-card-border);
+      box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.04);
+    }
+
+    /* BOTONES PILL */
+    .glass-pill {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      border-radius: 9999px;
+      padding: 0.45rem 0.95rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body[data-theme="dark"] .glass-pill {
+      background: rgba(30, 41, 59, 0.75);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      color: #e2e8f0;
+    }
+
+    .glass-pill:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    }
+
+    .glass-pill-active {
+      background: #ffffff !important;
+      color: var(--c-primary) !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1) !important;
+      border-color: rgba(255, 255, 255, 0.95) !important;
+    }
+
+    body[data-theme="dark"] .glass-pill-active {
+      background: #1e293b !important;
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+    }
+
+    /* CARDS Y CONTENEDORES GLASS */
+    .glass-card {
+      background: var(--glass-card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-card-border);
+      box-shadow: var(--glass-card-shadow);
+      border-radius: 1.25rem;
+      transition: all 0.25s ease;
+    }
+
+    .glass-card:hover {
+      box-shadow: 0 14px 36px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    body[data-theme="dark"] .glass-card:hover {
+      box-shadow: 0 14px 36px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    .glass-panel {
+      background: var(--glass-panel-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--glass-card-border);
+      box-shadow: var(--glass-card-shadow);
+      border-radius: 1.25rem;
+    }
+
+    /* INPUTS GLASS */
+    .glass-input {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      color: var(--c-text);
+      transition: all 0.2s ease;
+    }
+    body[data-theme="dark"] .glass-input {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #f8fafc;
+    }
+    .glass-input:focus {
+      outline: none;
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    /* TOAST NOTIFICACIÓN */
+    #app-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #app-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* TABLA RESPONSIVA */
+    .table-container {
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      background-color: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
+      transition: opacity 0.3s ease;
+    }
+
+    /* GAUGE PROGRESS RING */
+    .progress-ring__circle {
+      transition: stroke-dashoffset 0.8s ease-in-out;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen relative selection:bg-indigo-500 selection:text-white pb-16">
+
+  <!-- 1. ORBES ANIMADOS DE FONDO -->
+  <div class="blur-orb orb-a"></div>
+  <div class="blur-orb orb-b"></div>
+  <div class="blur-orb orb-c"></div>
+
+  <!-- 2. TOAST FLOTANTE PARA MENSAJES -->
+  <div id="app-toast" class="glass-panel px-5 py-3 rounded-2xl flex items-center gap-3 border border-white/60 shadow-2xl text-slate-800 dark:text-slate-100">
+    <div id="toast-icon-bg" class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow-md">
+      <i id="toast-icon" class="fa-solid fa-bell"></i>
+    </div>
+    <div>
+      <div id="toast-title" class="text-xs font-black tracking-wide uppercase text-blue-600 dark:text-blue-400">Notificación</div>
+      <span id="app-toast-message" class="text-xs font-semibold">Mensaje del sistema</span>
+    </div>
+  </div>
+
+  <!-- 3. CABECERA GLASS SUPERIOR -->
+  <header class="glass-header sticky top-0 z-40 px-3 sm:px-6 py-2.5 transition-all mb-4">
+    <div class="w-full max-w-[98%] 2xl:max-w-[96%] mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
+      
+      <!-- LOGO Y TÍTULO -->
+      <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+        <div class="flex items-center gap-3">
+          
+          <!-- Contenedor Logo Vonex -->
+          <div style="display: flex; align-items: center; justify-content: center; height: 38px; padding: 4px 14px; border-radius: 10px; background-color: #FFE001; box-shadow: 0 3px 10px rgba(0,0,0,0.08); border: 1.5px solid rgba(255,255,255,0.85);">
+            <span style="font-weight: 900; font-size: 14.5px; color: #1e3a8a; letter-spacing: -0.5px;">VONEX</span>
+          </div>
+          
+          <div style="width: 1px; height: 26px; background: rgba(15, 23, 42, 0.12);" class="hidden sm:block"></div>
+
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h1 class="font-black text-sm sm:text-base tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+                Tablero de Control: Asignación de Beneficios
+              </h1>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 border border-blue-300 dark:border-blue-700">
+                KPI01 · Ficha A-FOR-GSBC-0303
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block">
+              Efectividad de Beneficios Otorgados por Concurso de Becas | Meta ≥ 70% | Directores de Sede
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTONES DE ACCIÓN, CONTROL DE TEMA Y PALETA -->
+      <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
+        
+        <!-- Botón Ver Ficha de KPI -->
+        <button onclick="openModalFicha()" class="glass-pill text-blue-700 dark:text-blue-300 hover:bg-white/80" title="Ver Ficha Técnica Oficial del KPI">
+          <i class="fa-solid fa-file-lines text-blue-500"></i>
+          <span>Ficha KPI</span>
+        </button>
+
+        <!-- Botón Inicializar / Sincronizar Google Sheet -->
+        <button onclick="sincronizarConGoogleSheet()" id="btn-sync" class="glass-pill text-emerald-700 dark:text-emerald-300 hover:bg-white/80" title="Sincronizar y recalcular datos desde Google Sheets">
+          <i id="sync-icon" class="fa-solid fa-arrows-rotate text-emerald-500"></i>
+          <span id="sync-text">Sincronizar Sheet</span>
+        </button>
+
+        <!-- Paleta (Azul / Fucsia / Amarillo) -->
+        <button onclick="cycleThemePalette()" class="glass-pill text-indigo-700 dark:text-indigo-300 hover:bg-white/80" title="Cambiar Paleta de Color">
+          <i class="fa-solid fa-palette text-indigo-500"></i>
+          <span id="palette-btn-text">Tema</span>
+        </button>
+
+        <!-- Modo Claro / Oscuro -->
+        <button onclick="toggleTheme()" class="glass-pill text-amber-700 dark:text-yellow-300 hover:bg-white/80" title="Alternar Modo Claro / Oscuro">
+          <i id="theme-icon" class="fa-solid fa-sun text-amber-500"></i>
+          <span id="theme-text">Claro</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- 4. CONTENEDOR PRINCIPAL DEL MÓDULO -->
+  <div class="w-full max-w-[98%] 2xl:max-w-[96%] mx-auto px-2 sm:px-4 lg:px-6 space-y-5">
+    
+    <!-- BANNER DE CONTEXTO RÁPIDO & STATUS -->
+    <div class="glass-panel p-3 sm:p-4 flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+      <div class="flex items-center gap-3 w-full md:w-auto">
+        <div class="w-10 h-10 rounded-xl bg-blue-600/10 dark:bg-blue-400/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg font-bold border border-blue-500/20">
+          <i class="fa-solid fa-bullseye"></i>
+        </div>
+        <div>
+          <div class="font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+            <span>Objetivo del KPI:</span>
+            <span class="text-emerald-600 dark:text-emerald-400 font-black">Conversión de Ganadores a Matrículas Formalizadas</span>
+          </div>
+          <p class="text-slate-600 dark:text-slate-300 text-[11.5px]">
+            <strong>Fórmula:</strong> (N.° de becados matriculados / N.° total de becas otorgadas) × 100 &nbsp;|&nbsp; 
+            <strong>Responsable:</strong> Director Zonal &nbsp;|&nbsp; <strong>Evaluados:</strong> Directores de Sede
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Óptimo: ≥ 70%
+        </span>
+        <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+          Aceptable: 50% - 69%
+        </span>
+        <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-red-500/15 text-red-700 dark:text-red-300 border border-red-500/30 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-red-500"></span>
+          Crítico: &lt; 50%
+        </span>
+      </div>
+    </div>
+
+    <!-- 5. RIBBON PRINCIPAL: TARJETAS DE IMPACTO & GAUGE METAS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      
+      <!-- Card 1: GAUGE SCORE GLOBAL KPI -->
+      <div class="glass-card p-4 sm:p-5 flex items-center justify-between col-span-1 sm:col-span-2 lg:col-span-1 relative overflow-hidden">
+        <div class="space-y-1">
+          <span class="text-[11px] font-extrabold tracking-wider uppercase text-slate-500 dark:text-slate-400">
+            Efectividad Global
+          </span>
+          <div class="flex items-baseline gap-2">
+            <span id="stat-efectividad-porc" class="text-3xl font-black tracking-tight text-slate-900 dark:text-slate-50">
+              0.0%
+            </span>
+          </div>
+          <div id="stat-semaforo-badge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-black border">
+            <i id="stat-semaforo-icon" class="fa-solid fa-circle-notch fa-spin"></i>
+            <span id="stat-semaforo-text">Calculando...</span>
+          </div>
+          <div class="text-[10px] text-slate-500 dark:text-slate-400 pt-1">
+            Meta: <strong>≥ 70%</strong> (<span id="stat-brecha-meta">+0%</span>)
+          </div>
+        </div>
+
+        <!-- Mini SVG Circular Gauge -->
+        <div class="relative flex items-center justify-center">
+          <svg class="w-20 h-20" viewBox="0 0 100 100">
+            <circle class="text-slate-200 dark:text-slate-700 stroke-current" stroke-width="10" cx="50" cy="50" r="40" fill="transparent"></circle>
+            <circle id="gauge-circle" class="progress-ring__circle text-emerald-500 stroke-current" stroke-width="10" stroke-linecap="round" cx="50" cy="50" r="40" fill="transparent" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+          </svg>
+          <div class="absolute text-center">
+            <i class="fa-solid fa-trophy text-amber-500 text-sm"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: TOTAL BECAS OTORGADAS -->
+      <div class="glass-card p-4 sm:p-5 flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-extrabold tracking-wider uppercase text-slate-500 dark:text-slate-400">
+            Becas Otorgadas
+          </span>
+          <div class="w-8 h-8 rounded-xl bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-award"></i>
+          </div>
+        </div>
+        <div class="my-2">
+          <span id="stat-total-otorgadas" class="text-3xl font-black text-slate-900 dark:text-slate-50">0</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400 font-medium ml-1">ganadores</span>
+        </div>
+        <div class="flex items-center justify-between text-[10.5px] text-slate-500 dark:text-slate-400 border-t border-white/30 dark:border-white/10 pt-2">
+          <span>Fuente: Soporte / Intranet</span>
+          <span class="font-bold text-blue-600 dark:text-blue-400" id="stat-total-convocatorias">0 Convocatorias</span>
+        </div>
+      </div>
+
+      <!-- Card 3: MATRÍCULAS FORMALIZADAS (CONVERTIDAS) -->
+      <div class="glass-card p-4 sm:p-5 flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-extrabold tracking-wider uppercase text-slate-500 dark:text-slate-400">
+            Matriculados
+          </span>
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-user-check"></i>
+          </div>
+        </div>
+        <div class="my-2">
+          <span id="stat-total-matriculados" class="text-3xl font-black text-emerald-600 dark:text-emerald-400">0</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400 font-medium ml-1">alumnos formalizados</span>
+        </div>
+        <div class="flex items-center justify-between text-[10.5px] text-slate-500 dark:text-slate-400 border-t border-white/30 dark:border-white/10 pt-2">
+          <span>Fuente: Sistema Ventas</span>
+          <span class="font-bold text-emerald-600 dark:text-emerald-400" id="stat-efectividad-sub">0% éxito</span>
+        </div>
+      </div>
+
+      <!-- Card 4: EN PROCESO / EN RIESGO DE PÉRDIDA -->
+      <div class="glass-card p-4 sm:p-5 flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-extrabold tracking-wider uppercase text-slate-500 dark:text-slate-400">
+            En Seguimiento / Riesgo
+          </span>
+          <div class="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-user-clock"></i>
+          </div>
+        </div>
+        <div class="my-2 flex items-baseline gap-2">
+          <span id="stat-total-enproceso" class="text-3xl font-black text-amber-600 dark:text-amber-400">0</span>
+          <span class="text-xs text-red-500 dark:text-red-400 font-bold" id="stat-total-noconcretados">(+0 no conv.)</span>
+        </div>
+        <div class="flex items-center justify-between text-[10.5px] text-slate-500 dark:text-slate-400 border-t border-white/30 dark:border-white/10 pt-2">
+          <span>Oportunidad de Recuperación</span>
+          <span class="font-bold text-amber-600 dark:text-amber-400" id="stat-potencial-recuperacion">Gestionar</span>
+        </div>
+      </div>
+
+      <!-- Card 5: TOP SEDE LÍDER -->
+      <div class="glass-card p-4 sm:p-5 flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-extrabold tracking-wider uppercase text-slate-500 dark:text-slate-400">
+            Sede con Mayor Eficacia
+          </span>
+          <div class="w-8 h-8 rounded-xl bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-medal"></i>
+          </div>
+        </div>
+        <div class="my-2">
+          <div id="stat-top-sede-nombre" class="text-base font-black text-slate-900 dark:text-slate-50 truncate">
+            Sede Líder
+          </div>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span id="stat-top-sede-porc" class="text-xl font-extrabold text-purple-600 dark:text-purple-400">0%</span>
+            <span class="text-[10px] text-slate-500 dark:text-slate-400" id="stat-top-sede-director">Director</span>
+          </div>
+        </div>
+        <div class="flex items-center justify-between text-[10.5px] text-slate-500 dark:text-slate-400 border-t border-white/30 dark:border-white/10 pt-2">
+          <span>Rendimiento Evaluado</span>
+          <span class="font-bold text-purple-600 dark:text-purple-400">Top 1 Sede</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 6. BARRA DE FILTROS INTELIGENTES Y BÚSQUEDA -->
+    <div class="glass-card p-4 space-y-3">
+      <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+        
+        <!-- Buscador -->
+        <div class="relative flex-1">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="filtro-busqueda" oninput="aplicarFiltros()" placeholder="Buscar por alumno, DNI, convocatoria, asesor o sede..." class="glass-input w-full pl-9 pr-4 py-2 rounded-xl text-xs font-medium">
+        </div>
+
+        <!-- Selectores de Filtro -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <!-- Filtro Convocatoria -->
+          <select id="filtro-convocatoria" onchange="aplicarFiltros()" class="glass-input px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer">
+            <option value="TODAS">Todas las Convocatorias</option>
+          </select>
+
+          <!-- Filtro Tipo Beneficio -->
+          <select id="filtro-beneficio" onchange="aplicarFiltros()" class="glass-input px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer">
+            <option value="TODOS">Todos los Beneficios</option>
+            <option value="Beca Completa (100%)">Beca Completa (100%)</option>
+            <option value="Semi-Beca (50%)">Semi-Beca (50%)</option>
+            <option value="Cuarto de Beca (25%)">Cuarto de Beca (25%)</option>
+            <option value="Descuento 15%">Descuento 15%</option>
+          </select>
+
+          <!-- Filtro Sede -->
+          <select id="filtro-sede" onchange="aplicarFiltros()" class="glass-input px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer">
+            <option value="TODAS">Todas las Sedes</option>
+          </select>
+
+          <!-- Filtro Estado Matrícula -->
+          <select id="filtro-estado" onchange="aplicarFiltros()" class="glass-input px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer">
+            <option value="TODOS">Todos los Estados</option>
+            <option value="Matriculado">🟢 Matriculados</option>
+            <option value="En Proceso">🟡 En Proceso</option>
+            <option value="No Concretado">🔴 No Concretados</option>
+          </select>
+        </div>
+
+        <!-- Botón Reset Filtros -->
+        <button onclick="resetFiltros()" class="glass-pill text-slate-700 dark:text-slate-300 hover:bg-white/80 self-center" title="Limpiar todos los filtros">
+          <i class="fa-solid fa-filter-circle-xmark text-slate-400"></i>
+          <span>Limpiar</span>
+        </button>
+
+      </div>
+
+      <!-- Quick Filter Pills: Semáforos -->
+      <div class="flex items-center gap-2 flex-wrap pt-1 border-t border-white/20 dark:border-white/10 text-xs">
+        <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 mr-1">Filtrar por Desempeño:</span>
+        <button onclick="filtrarPorSemaforo('TODOS')" id="pill-sem-todos" class="glass-pill glass-pill-active text-[11px] py-1 px-3">
+          Todos (<span id="count-sem-todos">0</span>)
+        </button>
+        <button onclick="filtrarPorSemaforo('OPTIMO')" id="pill-sem-optimo" class="glass-pill text-emerald-700 dark:text-emerald-300 text-[11px] py-1 px-3">
+          <i class="fa-solid fa-circle-check text-emerald-500"></i>
+          Óptimo ≥70% (<span id="count-sem-optimo">0</span>)
+        </button>
+        <button onclick="filtrarPorSemaforo('ACEPTABLE')" id="pill-sem-aceptable" class="glass-pill text-amber-700 dark:text-amber-300 text-[11px] py-1 px-3">
+          <i class="fa-solid fa-circle-exclamation text-amber-500"></i>
+          Aceptable 50-69% (<span id="count-sem-aceptable">0</span>)
+        </button>
+        <button onclick="filtrarPorSemaforo('CRITICO')" id="pill-sem-critico" class="glass-pill text-red-700 dark:text-red-300 text-[11px] py-1 px-3">
+          <i class="fa-solid fa-triangle-exclamation text-red-500"></i>
+          Crítico &lt;50% (<span id="count-sem-critico">0</span>)
+        </button>
+      </div>
+    </div>
+
+    <!-- 7. SECCIÓN GRÁFICA INTERACTIVA -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      
+      <!-- Gráfico 1: Efectividad por Convocatoria vs Meta 70% -->
+      <div class="glass-card p-5 lg:col-span-2 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="font-extrabold text-sm sm:text-base text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <i class="fa-solid fa-chart-column text-blue-600 dark:text-blue-400"></i>
+              Efectividad por Convocatoria vs Meta (≥ 70%)
+            </h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">
+              Comparativa de porcentaje de becas convertidas en matrículas por cada concurso
+            </p>
+          </div>
+          <span class="px-2.5 py-1 rounded-lg text-[10.5px] font-black bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-500/30">
+            Línea Meta: 70%
+          </span>
+        </div>
+        <div class="relative w-full h-[280px]">
+          <canvas id="chartConvocatorias"></canvas>
+        </div>
+      </div>
+
+      <!-- Gráfico 2: Efectividad por Nivel de Beneficio -->
+      <div class="glass-card p-5 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="font-extrabold text-sm sm:text-base text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <i class="fa-solid fa-chart-pie text-emerald-600 dark:text-emerald-400"></i>
+              Conversión por Tipo de Beca
+            </h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">
+              ¿Qué tipo de beneficio formaliza más?
+            </p>
+          </div>
+        </div>
+        <div class="relative w-full h-[240px] flex items-center justify-center">
+          <canvas id="chartTiposBeca"></canvas>
+        </div>
+        <div id="legend-tipos-beca" class="grid grid-cols-2 gap-2 pt-2 border-t border-white/20 dark:border-white/10 text-[10.5px]">
+          <!-- Se llena por JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECCIÓN GRÁFICA SECUNDARIA: RANKING POR SEDE / DIRECTOR Y EMBUDO DE CONVERSIÓN -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      
+      <!-- Gráfico 3: Ranking de Directores de Sede Evaluados -->
+      <div class="glass-card p-5 lg:col-span-2 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="font-extrabold text-sm sm:text-base text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <i class="fa-solid fa-ranking-star text-purple-600 dark:text-purple-400"></i>
+              Desempeño por Director de Sede Evaluado
+            </h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">
+              Cumplimiento de meta del 70% por sede y responsable operativo
+            </p>
+          </div>
+          <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">
+            Responsable del KPI: <strong class="text-blue-600 dark:text-blue-400">Director Zonal</strong>
+          </span>
+        </div>
+        <div class="relative w-full h-[250px]">
+          <canvas id="chartDirectores"></canvas>
+        </div>
+      </div>
+
+      <!-- Gráfico 4: Embudo de Conversión del Beneficio -->
+      <div class="glass-card p-5 flex flex-col justify-between">
+        <div>
+          <h3 class="font-extrabold text-sm sm:text-base text-slate-900 dark:text-slate-100 flex items-center gap-2 mb-1">
+            <i class="fa-solid fa-filter text-amber-500"></i>
+            Embudo de Conversión
+          </h3>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-4">
+            Flujo desde otorgamiento hasta formalización
+          </p>
+        </div>
+
+        <div class="space-y-3 my-auto">
+          <!-- Paso 1 -->
+          <div class="glass-panel p-3 rounded-xl border border-blue-500/30">
+            <div class="flex items-center justify-between text-xs font-bold mb-1">
+              <span class="text-blue-700 dark:text-blue-300">1. Becas Otorgadas (Soporte)</span>
+              <span id="funnel-otorgadas" class="font-black text-blue-600 dark:text-blue-400">0</span>
+            </div>
+            <div class="w-full bg-blue-200/50 dark:bg-blue-900/40 rounded-full h-2">
+              <div class="bg-blue-600 h-2 rounded-full" style="width: 100%"></div>
+            </div>
+            <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">100% de la base oficial</div>
+          </div>
+
+          <!-- Paso 2 -->
+          <div class="glass-panel p-3 rounded-xl border border-amber-500/30">
+            <div class="flex items-center justify-between text-xs font-bold mb-1">
+              <span class="text-amber-700 dark:text-amber-300">2. Contactados / En Gestión</span>
+              <span id="funnel-contactados" class="font-black text-amber-600 dark:text-amber-400">0</span>
+            </div>
+            <div class="w-full bg-amber-200/50 dark:bg-amber-900/40 rounded-full h-2">
+              <div id="funnel-contactados-bar" class="bg-amber-500 h-2 rounded-full" style="width: 80%"></div>
+            </div>
+            <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-1" id="funnel-contactados-porc">En gestión comercial</div>
+          </div>
+
+          <!-- Paso 3 -->
+          <div class="glass-panel p-3 rounded-xl border border-emerald-500/30">
+            <div class="flex items-center justify-between text-xs font-bold mb-1">
+              <span class="text-emerald-700 dark:text-emerald-300">3. Matrículas Formalizadas (Meta ≥70%)</span>
+              <span id="funnel-matriculados" class="font-black text-emerald-600 dark:text-emerald-400">0</span>
+            </div>
+            <div class="w-full bg-emerald-200/50 dark:bg-emerald-900/40 rounded-full h-2">
+              <div id="funnel-matriculados-bar" class="bg-emerald-500 h-2 rounded-full" style="width: 70%"></div>
+            </div>
+            <div class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 mt-1" id="funnel-matriculados-porc">Efectividad final</div>
+          </div>
+        </div>
+
+        <div class="text-center text-[10.5px] text-slate-500 dark:text-slate-400 pt-3 border-t border-white/20 dark:border-white/10">
+          Contraste cruzado Soporte vs Ventas
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 8. NAVEGACIÓN POR PESTAÑAS: MATRIZ DE CONVOCATORIAS, PADRÓN NOMINAL Y SIMULADOR -->
+    <div class="flex items-center justify-center py-2">
+      <nav class="flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-full bg-slate-200/60 dark:bg-slate-800/60 border border-white/40 dark:border-white/10 shadow-inner">
+        <button onclick="cambiarTab('tab-convocatorias')" id="btn-tab-convocatorias" class="glass-pill glass-pill-active font-extrabold">
+          <i class="fa-solid fa-table-list text-blue-600 dark:text-blue-400"></i>
+          <span>1. Resumen por Convocatoria (Intranet)</span>
+        </button>
+        <button onclick="cambiarTab('tab-padron')" id="btn-tab-padron" class="glass-pill font-semibold text-slate-700 dark:text-slate-300">
+          <i class="fa-solid fa-users text-emerald-600 dark:text-emerald-400"></i>
+          <span>2. Padrón Nominal de Beneficiarios</span>
+        </button>
+        <button onclick="cambiarTab('tab-simulador')" id="btn-tab-simulador" class="glass-pill font-semibold text-slate-700 dark:text-slate-300">
+          <i class="fa-solid fa-calculator text-purple-600 dark:text-purple-400"></i>
+          <span>3. Simulador de Metas y Proyección</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- TAB 1: TABLA RESUMEN POR CONVOCATORIA (ESPEJO INTRANET + KPI) -->
+    <div id="tab-convocatorias" class="tab-content space-y-4">
+      <div class="glass-card p-5">
+        
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <h3 class="font-extrabold text-base text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <i class="fa-solid fa-award text-blue-600 dark:text-blue-400"></i>
+              Matriz Consolidada de Convocatorias y Eficacia
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              Listado oficial con desglose de becas otorgadas, matriculados, efectividad y brecha de meta por sede.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="exportarExcelConvocatorias()" class="glass-pill text-emerald-700 dark:text-emerald-300 hover:bg-white/80 text-xs">
+              <i class="fa-solid fa-file-excel text-emerald-500"></i>
+              <span>Exportar CSV</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b border-white/30 dark:border-white/10 text-slate-500 dark:text-slate-400 font-extrabold uppercase text-[10.5px]">
+                <th class="py-3 px-3"># Convocatoria</th>
+                <th class="py-3 px-3">Tipo</th>
+                <th class="py-3 px-3">Sede & Zona</th>
+                <th class="py-3 px-3">Director Evaluado</th>
+                <th class="py-3 px-3 text-center">Otorgadas</th>
+                <th class="py-3 px-3 text-center">Matriculados</th>
+                <th class="py-3 px-3 text-center">En Proceso</th>
+                <th class="py-3 px-3 text-center">No Concret.</th>
+                <th class="py-3 px-3 text-center">% Efectividad</th>
+                <th class="py-3 px-3 text-center">Estado Semáforo</th>
+                <th class="py-3 px-3 text-center">Brecha</th>
+                <th class="py-3 px-3 text-center">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-convocatorias" class="divide-y divide-white/20 dark:divide-white/5 font-medium text-slate-700 dark:text-slate-200">
+              <!-- Renderizado dinámico por JS -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: PADRÓN NOMINAL DE BENEFICIARIOS (DETALLE SOPORTE VS VENTAS) -->
+    <div id="tab-padron" class="tab-content hidden space-y-4">
+      <div class="glass-card p-5">
+        
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <h3 class="font-extrabold text-base text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <i class="fa-solid fa-id-card text-emerald-600 dark:text-emerald-400"></i>
+              Padrón Nominal de Beneficiarios (Soporte vs Matrículas Ventas)
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              Seguimiento uno a uno de cada beneficiario para contacto directo y actualización del estado de matrícula.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="exportarExcelPadron()" class="glass-pill text-emerald-700 dark:text-emerald-300 hover:bg-white/80 text-xs">
+              <i class="fa-solid fa-file-excel text-emerald-500"></i>
+              <span>Exportar Padrón</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b border-white/30 dark:border-white/10 text-slate-500 dark:text-slate-400 font-extrabold uppercase text-[10.5px]">
+                <th class="py-3 px-3">Código</th>
+                <th class="py-3 px-3">Estudiante & DNI</th>
+                <th class="py-3 px-3">Convocatoria</th>
+                <th class="py-3 px-3">Nivel Beneficio</th>
+                <th class="py-3 px-3">Sede</th>
+                <th class="py-3 px-3">Director Evaluado</th>
+                <th class="py-3 px-3 text-center">Estado Matrícula</th>
+                <th class="py-3 px-3">Asesor Ventas</th>
+                <th class="py-3 px-3 text-center">Gestión / Contacto</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-padron" class="divide-y divide-white/20 dark:divide-white/5 font-medium text-slate-700 dark:text-slate-200">
+              <!-- Renderizado dinámico por JS -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 3: SIMULADOR DE METAS Y PROYECCIÓN (PRO) -->
+    <div id="tab-simulador" class="tab-content hidden space-y-5">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        
+        <!-- Panel de Control de Simulación -->
+        <div class="glass-card p-5 space-y-4">
+          <h3 class="font-extrabold text-base text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <i class="fa-solid fa-sliders text-purple-600 dark:text-purple-400"></i>
+            Simulador de Cumplimiento (Meta 70%)
+          </h3>
+          <p class="text-xs text-slate-600 dark:text-slate-300">
+            Calcula cuántas matrículas adicionales se necesitan convertir en una convocatoria para alcanzar el rango ÓPTIMO (≥ 70%).
+          </p>
+
+          <div class="space-y-3">
+            <div>
+              <label class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">Seleccionar Convocatoria:</label>
+              <select id="sim-select-convocatoria" onchange="actualizarSimulacion()" class="glass-input w-full px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer">
+                <!-- Se llena por JS -->
+              </select>
+            </div>
+
+            <div class="glass-panel p-4 rounded-xl space-y-2 border border-purple-500/20">
+              <div class="flex justify-between text-xs font-bold">
+                <span>Becas Otorgadas:</span>
+                <span id="sim-otorgadas" class="font-black text-purple-600 dark:text-purple-400">0</span>
+              </div>
+              <div class="flex justify-between text-xs font-bold">
+                <span>Matriculados Actuales:</span>
+                <span id="sim-matriculados-act" class="font-black text-blue-600 dark:text-blue-400">0</span>
+              </div>
+              <div class="flex justify-between text-xs font-bold">
+                <span>Efectividad Actual:</span>
+                <span id="sim-efectividad-act" class="font-black">0%</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1">
+                <span>Matrículas Adicionales Simuladas:</span>
+                <span id="sim-adicionales-val" class="font-black text-purple-600 dark:text-purple-400 text-sm">+0</span>
+              </div>
+              <input type="range" id="sim-slider-adicionales" min="0" max="15" value="0" oninput="actualizarCalculoSimulacion()" class="w-full accent-purple-600 cursor-pointer">
+            </div>
+          </div>
+        </div>
+
+        <!-- Resultado de la Proyección -->
+        <div class="glass-card p-5 lg:col-span-2 flex flex-col justify-between">
+          <div>
+            <h3 class="font-extrabold text-base text-slate-900 dark:text-slate-100 flex items-center gap-2 mb-2">
+              <i class="fa-solid fa-chart-line text-emerald-600 dark:text-emerald-400"></i>
+              Resultado de la Proyección Simulada
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+              Impacto directo en el indicador de eficacia y estado semafórico institucional.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 my-auto">
+            
+            <div class="glass-panel p-4 rounded-xl text-center border border-blue-500/20">
+              <span class="text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400">Nueva Efectividad</span>
+              <div id="sim-resultado-porc" class="text-3xl font-black text-blue-600 dark:text-blue-400 my-1">0.0%</div>
+              <span class="text-[10px] text-slate-500 dark:text-slate-400">Proyectada</span>
+            </div>
+
+            <div class="glass-panel p-4 rounded-xl text-center border border-purple-500/20">
+              <span class="text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400">Nuevo Semáforo</span>
+              <div id="sim-resultado-semaforo" class="text-sm font-black my-2 px-2 py-1 rounded-full inline-block">
+                -
+              </div>
+              <div class="text-[10px] text-slate-500 dark:text-slate-400" id="sim-resultado-cumple">Evaluar</div>
+            </div>
+
+            <div class="glass-panel p-4 rounded-xl text-center border border-emerald-500/20">
+              <span class="text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400">Faltante para Meta (70%)</span>
+              <div id="sim-resultado-faltantes" class="text-3xl font-black text-emerald-600 dark:text-emerald-400 my-1">0</div>
+              <span class="text-[10px] text-slate-500 dark:text-slate-400">Alumnos por matricular</span>
+            </div>
+
+          </div>
+
+          <div class="p-4 rounded-xl bg-blue-500/10 dark:bg-blue-400/10 border border-blue-500/20 text-xs text-slate-700 dark:text-slate-200 mt-4">
+            <strong class="text-blue-600 dark:text-blue-400">Recomendación Estratégica:</strong>
+            <span id="sim-recomendacion-texto">
+              Seleccione una convocatoria para proyectar la meta.
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==========================================
+       MODAL 1: FICHA TÉCNICA DEL KPI (A-FOR-GSBC-0303)
+  ========================================== -->
+  <div id="modal-ficha" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 hidden">
+    <div class="modal-overlay fixed inset-0" onclick="closeModalFicha()"></div>
+    
+    <div class="glass-card max-w-3xl w-full max-h-[90vh] overflow-y-auto p-5 sm:p-7 z-10 border border-white/80 shadow-2xl relative">
+      
+      <!-- Botón Cerrar -->
+      <button onclick="closeModalFicha()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-200/60 dark:bg-slate-700/60 text-slate-700 dark:text-slate-200 flex items-center justify-center hover:bg-slate-300">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Cabecera Oficial Ficha -->
+      <div class="border-b-2 border-blue-600 pb-3 mb-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div style="padding: 3px 10px; border-radius: 6px; background-color: #FFE001; font-weight: 900; color: #1e3a8a; font-size: 13px;">
+            VONEX
+          </div>
+          <div>
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">FORMATO OFICIAL</span>
+            <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100">FICHA DE KPI</h2>
+          </div>
+        </div>
+        <div class="text-right text-[11px] font-bold text-slate-600 dark:text-slate-400">
+          <div>Código: <span class="text-blue-600 font-extrabold">A-FOR-GSBC-0303</span></div>
+          <div>Versión: 01 | Act: 27/08/2026</div>
+        </div>
+      </div>
+
+      <!-- Cuerpo Ficha Técnica -->
+      <div class="space-y-4 text-xs">
+        
+        <!-- Proceso -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
+          <div class="font-extrabold text-slate-500 uppercase text-[10.5px]">PROCESO:</div>
+          <div class="sm:col-span-2 font-black text-slate-900 dark:text-slate-100 text-sm">ASIGNACIÓN DE BENEFICIOS</div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
+          <div class="font-extrabold text-slate-500 uppercase text-[10.5px]">FINALIDAD DEL PROCESO:</div>
+          <div class="sm:col-span-2 text-slate-700 dark:text-slate-300 leading-relaxed">
+            Gestionar la asignación de beneficios de estudios mediante criterios académicos, socioeconómicos, comerciales e institucionales, promoviendo el acceso, la permanencia y la excelencia educativa de los estudiantes.
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
+          <div class="font-extrabold text-slate-500 uppercase text-[10.5px]">DUEÑO DEL PROCESO:</div>
+          <div class="sm:col-span-2 font-bold text-slate-900 dark:text-slate-100">Jefa de Ventas</div>
+        </div>
+
+        <!-- KPI Info -->
+        <div class="p-4 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800">
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-[11px] font-black uppercase text-blue-700 dark:text-blue-300">INDICADOR:</span>
+            <span class="px-2 py-0.5 rounded bg-blue-600 text-white font-extrabold text-[11px]">N° KPI01</span>
+          </div>
+          <h3 class="font-black text-sm text-slate-900 dark:text-slate-100">
+            PORCENTAJE DE EFECTIVIDAD DE LOS BENEFICIOS OTORGADOS POR CONCURSO DE BECAS
+          </h3>
+          <p class="text-[11.5px] text-slate-600 dark:text-slate-300 mt-1">
+            <strong>Finalidad del KPI:</strong> Medir el porcentaje de beneficiarios que formalizan su matrícula luego de la publicación de resultados.
+          </p>
+        </div>
+
+        <!-- Cuadrícula de Métricas -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+          <div class="p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
+            <span class="text-[10px] font-bold text-slate-500 uppercase block">META</span>
+            <span class="text-sm font-black text-emerald-600 dark:text-emerald-400">≥ 70%</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
+            <span class="text-[10px] font-bold text-slate-500 uppercase block">UNIDAD</span>
+            <span class="text-sm font-black text-slate-800 dark:text-slate-200">Porcentaje (%)</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
+            <span class="text-[10px] font-bold text-slate-500 uppercase block">PERIODICIDAD</span>
+            <span class="text-sm font-black text-slate-800 dark:text-slate-200">Por convocatoria</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
+            <span class="text-[10px] font-bold text-slate-500 uppercase block">TIPO</span>
+            <span class="text-sm font-black text-blue-600 dark:text-blue-400">Eficacia</span>
+          </div>
+        </div>
+
+        <!-- Fórmula -->
+        <div class="p-3 rounded-xl bg-slate-100/90 dark:bg-slate-800/90 font-mono text-center font-bold text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700">
+          CÁLCULO: (N.° de becados matriculados tipo "X" / N.° total de becas otorgadas tipo "X") × 100
+        </div>
+
+        <!-- Roles -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <div class="p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
+            <span class="text-[10px] font-extrabold text-slate-500 uppercase block">RESPONSABLE DEL KPI:</span>
+            <span class="font-bold text-slate-900 dark:text-slate-100">Director Zonal</span>
+            <p class="text-[10px] text-slate-500 mt-0.5">Asegura que se cumpla el KPI</p>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
+            <span class="text-[10px] font-extrabold text-slate-500 uppercase block">PROCESADOR INFO:</span>
+            <span class="font-bold text-slate-900 dark:text-slate-100">Gestión de Procesos Vonex</span>
+            <p class="text-[10px] text-slate-500 mt-0.5">Calcula KPI y emite alertas</p>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70">
+            <span class="text-[10px] font-extrabold text-slate-500 uppercase block">EVALUADO:</span>
+            <span class="font-bold text-slate-900 dark:text-slate-100">Directores de sede</span>
+            <p class="text-[10px] text-slate-500 mt-0.5">Ejecuta la actividad para lograr la meta</p>
+          </div>
+        </div>
+
+        <!-- Semáforo Interpretación -->
+        <div class="p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/70 space-y-1.5">
+          <span class="text-[10px] font-extrabold text-slate-500 uppercase block">RANGO E INTERPRETACIÓN:</span>
+          <div class="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+            <i class="fa-solid fa-circle-check"></i>
+            <span><strong>Óptimo: ≥ 70%</strong> → La mayoría de los becados otorgados se matricula.</span>
+          </div>
+          <div class="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span><strong>Aceptable: 50% – 69%</strong> → Existe una conversión moderada de becados a matriculados.</span>
+          </div>
+          <div class="flex items-center gap-2 text-red-700 dark:text-red-300">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span><strong>Crítico: &lt; 50%</strong> → Se evidencia una baja efectividad en la captación de los becados otorgados.</span>
+          </div>
+        </div>
+
+        <!-- Consideraciones -->
+        <div class="p-3 rounded-xl bg-amber-500/10 dark:bg-amber-400/10 border border-amber-500/20 text-slate-700 dark:text-slate-300 text-[11px] leading-relaxed">
+          <strong>CONSIDERACIONES (*):</strong> Solo se tomará en consideración la relación oficial de ganadores del concurso de becas remitida por el área de Soporte. Dicha información será contrastada con los registros de matrícula del área de Ventas para determinar la cantidad de becados que efectivamente se matricularon durante la campaña correspondiente.
+        </div>
+
+      </div>
+
+      <div class="mt-5 text-right">
+        <button onclick="closeModalFicha()" class="glass-pill glass-pill-active px-5 py-2">
+          Entendido
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 2: ACTUALIZAR ESTADO DE MATRÍCULA
+  ========================================== -->
+  <div id="modal-editar-matricula" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 hidden">
+    <div class="modal-overlay fixed inset-0" onclick="closeModalEditar()"></div>
+    
+    <div class="glass-card max-w-md w-full p-5 sm:p-6 z-10 border border-white/80 shadow-2xl relative">
+      <button onclick="closeModalEditar()" class="absolute top-4 right-4 w-7 h-7 rounded-full bg-slate-200/60 dark:bg-slate-700/60 text-slate-700 dark:text-slate-200 flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <h3 class="font-extrabold text-base text-slate-900 dark:text-slate-100 flex items-center gap-2 mb-1">
+        <i class="fa-solid fa-user-pen text-blue-600"></i>
+        Actualizar Estado de Matrícula
+      </h3>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-4" id="modal-edit-sub">
+        Beneficiario: -
+      </p>
+
+      <form id="form-edit-matricula" onsubmit="guardarEdicionMatricula(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="edit-id-beneficiario">
+
+        <div>
+          <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">Estado de la Matrícula:</label>
+          <select id="edit-estado-matricula" class="glass-input w-full px-3 py-2 rounded-xl font-bold cursor-pointer" required>
+            <option value="Matriculado">🟢 Formalizado / Matriculado</option>
+            <option value="En Proceso">🟡 En Proceso / Seguimiento</option>
+            <option value="No Concretado">🔴 No Concretado / Desistió</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">Asesor(a) de Ventas a Cargo:</label>
+          <input type="text" id="edit-asesor" placeholder="Ej. Asesora Lucía Castro" class="glass-input w-full px-3 py-2 rounded-xl">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">N° Boleta / Recibo:</label>
+            <input type="text" id="edit-boleta" placeholder="B001-000000" class="glass-input w-full px-3 py-2 rounded-xl">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">Monto Pagado (S/.):</label>
+            <input type="number" step="0.01" id="edit-monto" placeholder="0.00" class="glass-input w-full px-3 py-2 rounded-xl">
+          </div>
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">Observaciones / Motivo:</label>
+          <textarea id="edit-observaciones" rows="2" placeholder="Detalle de seguimiento comercial..." class="glass-input w-full px-3 py-2 rounded-xl"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModalEditar()" class="glass-pill text-slate-700 dark:text-slate-300">
+            Cancelar
+          </button>
+          <button type="submit" id="btn-guardar-mat" class="glass-pill glass-pill-active text-blue-700 font-extrabold">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Guardar Cambios</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       SCRIPTS: LÓGICA DE NEGOCIO, CHARTS Y TEMAS
+  ========================================== -->
+  <script>
+    // Variables de Estado Global
+    let currentPalette = localStorage.getItem('vonex_palette_theme') || 'ocean';
+    let rawDashboardData = null;
+    let filteredData = {
+      convocatorias: [],
+      ganadores: []
+    };
+    let semaforoFilter = 'TODOS';
+
+    // Instancias de gráficos Chart.js
+    let chartConvs = null;
+    let chartTipos = null;
+    let chartDirs = null;
+
+    // Inicialización al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      // Tema y Paleta
+      const savedTheme = localStorage.getItem('vonex_theme_pref');
+      if (savedTheme === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+        updateThemeUI(true);
+      }
+      if (currentPalette !== 'ocean') {
+        applyPalette(currentPalette);
+      }
+
+      // Cargar datos
+      cargarDatosTablero();
+    });
+
+    // Función para obtener datos desde Apps Script o Fallback local
+    function cargarDatosTablero() {
+      showToast("Cargando datos del Tablero...", 2000);
+      
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(function(responseString) {
+            try {
+              rawDashboardData = JSON.parse(responseString);
+              procesarYRenderizar(rawDashboardData);
+              showToast("Datos sincronizados con Google Sheets", 3000);
+            } catch (e) {
+              console.error("Error al parsear datos:", e);
+              usarDatosFallback();
+            }
+          })
+          .withFailureHandler(function(err) {
+            console.warn("Fallo en Apps Script, usando datos de demostración:", err);
+            usarDatosFallback();
+          })
+          .obtenerDatosTablero();
+      } else {
+        usarDatosFallback();
+      }
+    }
+
+    function usarDatosFallback() {
+      // Generar dataset completo de respaldo con 45 ganadores
+      rawDashboardData = generarDatasetFallbackCompleto();
+      procesarYRenderizar(rawDashboardData);
+    }
+
+    function procesarYRenderizar(data) {
+      if (!data) return;
+
+      // Poblar filtros select
+      poblarSelectFiltros(data);
+
+      // Aplicar filtros iniciales
+      aplicarFiltros();
+
+      // Poblar simulador
+      poblarSimulador(data.convocatorias);
+    }
+
+    function poblarSelectFiltros(data) {
+      const selectConv = document.getElementById('filtro-convocatoria');
+      const selectSede = document.getElementById('filtro-sede');
+
+      // Guardar valor actual
+      const valConv = selectConv.value;
+      const valSede = selectSede.value;
+
+      selectConv.innerHTML = '<option value="TODAS">Todas las Convocatorias</option>';
+      selectSede.innerHTML = '<option value="TODAS">Todas las Sedes</option>';
+
+      data.convocatorias.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = c.nombre;
+        selectConv.appendChild(opt);
+      });
+
+      const sedes = [...new Set(data.convocatorias.map(c => c.sede))];
+      sedes.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s;
+        opt.textContent = s;
+        selectSede.appendChild(opt);
+      });
+
+      selectConv.value = valConv || "TODAS";
+      selectSede.value = valSede || "TODAS";
+    }
+
+    function aplicarFiltros() {
+      if (!rawDashboardData) return;
+
+      const textoBusqueda = (document.getElementById('filtro-busqueda').value || '').toLowerCase().trim();
+      const filtroConv = document.getElementById('filtro-convocatoria').value;
+      const filtroBen = document.getElementById('filtro-beneficio').value;
+      const filtroSede = document.getElementById('filtro-sede').value;
+      const filtroEstado = document.getElementById('filtro-estado').value;
+
+      // Filtrar Ganadores
+      filteredData.ganadores = rawDashboardData.ganadores.filter(g => {
+        const matchBusqueda = !textoBusqueda || 
+          (g.estudiante && g.estudiante.toLowerCase().includes(textoBusqueda)) ||
+          (g.dni && g.dni.includes(textoBusqueda)) ||
+          (g.nombreConvocatoria && g.nombreConvocatoria.toLowerCase().includes(textoBusqueda)) ||
+          (g.sede && g.sede.toLowerCase().includes(textoBusqueda)) ||
+          (g.asesorVentas && g.asesorVentas.toLowerCase().includes(textoBusqueda));
+
+        const matchConv = (filtroConv === "TODAS" || g.idConvocatoria === filtroConv);
+        const matchBen = (filtroBen === "TODOS" || g.nivelBeneficio === filtroBen);
+        const matchSede = (filtroSede === "TODAS" || g.sede === filtroSede);
+        const matchEstado = (filtroEstado === "TODOS" || g.estadoMatricula === filtroEstado);
+
+        return matchBusqueda && matchConv && matchBen && matchSede && matchEstado;
+      });
+
+      // Filtrar Convocatorias y recalcular
+      filteredData.convocatorias = rawDashboardData.convocatorias.filter(c => {
+        const matchConv = (filtroConv === "TODAS" || c.id === filtroConv);
+        const matchSede = (filtroSede === "TODAS" || c.sede === filtroSede);
+        const matchSem = (semaforoFilter === 'TODOS' || c.semaforo.estado === semaforoFilter);
+
+        return matchConv && matchSede && matchSem;
+      });
+
+      // Actualizar Contadores de Semáforos
+      actualizarContadoresSemaforo(rawDashboardData.convocatorias);
+
+      // Renderizar UI y Gráficos
+      renderizarEstadisticasGlobales();
+      renderizarGraficos();
+      renderizarTablaConvocatorias();
+      renderizarTablaPadron();
+      renderizarEmbudo();
+    }
+
+    function actualizarContadoresSemaforo(convocatorias) {
+      let opt = 0, ace = 0, cri = 0;
+      convocatorias.forEach(c => {
+        if (c.semaforo.estado === 'OPTIMO') opt++;
+        else if (c.semaforo.estado === 'ACEPTABLE') ace++;
+        else if (c.semaforo.estado === 'CRITICO') cri++;
+      });
+
+      document.getElementById('count-sem-todos').innerText = convocatorias.length;
+      document.getElementById('count-sem-optimo').innerText = opt;
+      document.getElementById('count-sem-aceptable').innerText = ace;
+      document.getElementById('count-sem-critico').innerText = cri;
+    }
+
+    function filtrarPorSemaforo(estado) {
+      semaforoFilter = estado;
+      ['todos', 'optimo', 'aceptable', 'critico'].forEach(id => {
+        const btn = document.getElementById('pill-sem-' + id);
+        if (btn) {
+          if (id === estado.toLowerCase()) btn.classList.add('glass-pill-active');
+          else btn.classList.remove('glass-pill-active');
+        }
+      });
+      aplicarFiltros();
+    }
+
+    function resetFiltros() {
+      document.getElementById('filtro-busqueda').value = '';
+      document.getElementById('filtro-convocatoria').value = 'TODAS';
+      document.getElementById('filtro-beneficio').value = 'TODOS';
+      document.getElementById('filtro-sede').value = 'TODAS';
+      document.getElementById('filtro-estado').value = 'TODOS';
+      filtrarPorSemaforo('TODOS');
+    }
+
+    function renderizarEstadisticasGlobales() {
+      const ganadores = filteredData.ganadores;
+      const totalOtorgadas = ganadores.length;
+      const totalMatriculados = ganadores.filter(g => g.estadoMatricula === "Matriculado").length;
+      const totalEnProceso = ganadores.filter(g => g.estadoMatricula === "En Proceso").length;
+      const totalNoConcretados = ganadores.filter(g => g.estadoMatricula === "No Concretado" || g.estadoMatricula === "No Registrado").length;
+      
+      const efectividad = totalOtorgadas > 0 ? (totalMatriculados / totalOtorgadas) : 0;
+      const efectividadPorc = (efectividad * 100).toFixed(1);
+      const brecha = (efectividad - 0.70) * 100;
+
+      // Valores numéricos
+      document.getElementById('stat-efectividad-porc').innerText = efectividadPorc + '%';
+      document.getElementById('stat-total-otorgadas').innerText = totalOtorgadas;
+      document.getElementById('stat-total-matriculados').innerText = totalMatriculados;
+      document.getElementById('stat-total-enproceso').innerText = totalEnProceso;
+      document.getElementById('stat-total-noconcretados').innerText = `(+${totalNoConcretados} no conv.)`;
+      document.getElementById('stat-total-convocatorias').innerText = `${filteredData.convocatorias.length} Convocatorias`;
+      document.getElementById('stat-efectividad-sub').innerText = `${efectividadPorc}% éxito`;
+
+      const brechaElem = document.getElementById('stat-brecha-meta');
+      brechaElem.innerText = (brecha >= 0 ? '+' : '') + brecha.toFixed(1) + '% vs 70%';
+      brechaElem.className = brecha >= 0 ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-red-500 dark:text-red-400 font-bold';
+
+      // Semáforo Badge
+      const badge = document.getElementById('stat-semaforo-badge');
+      const icon = document.getElementById('stat-semaforo-icon');
+      const text = document.getElementById('stat-semaforo-text');
+      const gauge = document.getElementById('gauge-circle');
+
+      // Animación de Gauge
+      const circumference = 2 * Math.PI * 40; // 251.2
+      const offset = circumference - (efectividad * circumference);
+      gauge.style.strokeDashoffset = offset;
+
+      if (efectividad >= 0.70) {
+        badge.className = "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/30";
+        icon.className = "fa-solid fa-circle-check text-emerald-500";
+        text.innerText = "Óptimo (≥ 70%)";
+        gauge.setAttribute('class', 'progress-ring__circle text-emerald-500 stroke-current');
+      } else if (efectividad >= 0.50) {
+        badge.className = "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-500/30";
+        icon.className = "fa-solid fa-circle-exclamation text-amber-500";
+        text.innerText = "Aceptable (50%-69%)";
+        gauge.setAttribute('class', 'progress-ring__circle text-amber-500 stroke-current');
+      } else {
+        badge.className = "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-black bg-red-500/20 text-red-700 dark:text-red-300 border-red-500/30";
+        icon.className = "fa-solid fa-triangle-exclamation text-red-500";
+        text.innerText = "Crítico (< 50%)";
+        gauge.setAttribute('class', 'progress-ring__circle text-red-500 stroke-current');
+      }
+
+      // Top Sede
+      if (rawDashboardData.porSede && rawDashboardData.porSede.length > 0) {
+        const sortedSedes = [...rawDashboardData.porSede].sort((a, b) => b.efectividad - a.efectividad);
+        const topSede = sortedSedes[0];
+        document.getElementById('stat-top-sede-nombre').innerText = topSede.sede;
+        document.getElementById('stat-top-sede-porc').innerText = topSede.efectividadPorc + '%';
+        document.getElementById('stat-top-sede-director').innerText = `Dir: ${topSede.director.split(' ')[1] || topSede.director}`;
+      }
+    }
+
+    function renderizarEmbudo() {
+      const ganadores = filteredData.ganadores;
+      const otorgadas = ganadores.length;
+      const matriculados = ganadores.filter(g => g.estadoMatricula === "Matriculado").length;
+      const enProceso = ganadores.filter(g => g.estadoMatricula === "En Proceso").length;
+      const contactados = matriculados + enProceso;
+
+      document.getElementById('funnel-otorgadas').innerText = otorgadas;
+      document.getElementById('funnel-contactados').innerText = contactados;
+      document.getElementById('funnel-matriculados').innerText = matriculados;
+
+      const porcContactados = otorgadas > 0 ? ((contactados / otorgadas) * 100).toFixed(1) : 0;
+      const porcMatriculados = otorgadas > 0 ? ((matriculados / otorgadas) * 100).toFixed(1) : 0;
+
+      document.getElementById('funnel-contactados-bar').style.width = porcContactados + '%';
+      document.getElementById('funnel-contactados-porc').innerText = `${porcContactados}% con respuesta comercial activa`;
+
+      document.getElementById('funnel-matriculados-bar').style.width = porcMatriculados + '%';
+      document.getElementById('funnel-matriculados-porc').innerText = `${porcMatriculados}% efectividad final (Meta: 70%)`;
+    }
+
+    function renderizarGraficos() {
+      const isDark = document.body.getAttribute('data-theme') === 'dark';
+      const textColor = isDark ? '#cbd5e1' : '#475569';
+      const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+
+      // 1. Gráfico Convocatorias vs Meta
+      const convs = filteredData.convocatorias;
+      const labelsConv = convs.map(c => c.nombre.length > 28 ? c.nombre.substring(0, 26) + '...' : c.nombre);
+      const dataEfect = convs.map(c => (c.efectividad * 100).toFixed(1));
+      const bgColors = convs.map(c => {
+        if (c.efectividad >= 0.70) return 'rgba(16, 185, 129, 0.85)';
+        if (c.efectividad >= 0.50) return 'rgba(245, 158, 11, 0.85)';
+        return 'rgba(239, 68, 68, 0.85)';
+      });
+
+      if (chartConvs) chartConvs.destroy();
+      const ctxConvs = document.getElementById('chartConvocatorias').getContext('2d');
+      chartConvs = new Chart(ctxConvs, {
+        type: 'bar',
+        data: {
+          labels: labelsConv,
+          datasets: [
+            {
+              label: '% Efectividad',
+              data: dataEfect,
+              backgroundColor: bgColors,
+              borderRadius: 6,
+              borderSkipped: false,
+              barThickness: 24
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `Efectividad: ${ctx.raw}% (Meta: 70%)`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: { color: textColor, callback: (v) => v + '%' },
+              grid: { color: gridColor }
+            },
+            x: {
+              ticks: { color: textColor, font: { size: 10 } },
+              grid: { display: false }
+            }
+          }
+        }
+      });
+
+      // 2. Gráfico Tipos de Beca
+      const niveles = ["Beca Completa (100%)", "Semi-Beca (50%)", "Cuarto de Beca (25%)", "Descuento 15%"];
+      const dataTipos = niveles.map(n => {
+        const gNivel = filteredData.ganadores.filter(g => g.nivelBeneficio === n);
+        const ot = gNivel.length;
+        const mat = gNivel.filter(g => g.estadoMatricula === "Matriculado").length;
+        return ot > 0 ? ((mat / ot) * 100).toFixed(1) : 0;
+      });
+
+      if (chartTipos) chartTipos.destroy();
+      const ctxTipos = document.getElementById('chartTiposBeca').getContext('2d');
+      chartTipos = new Chart(ctxTipos, {
+        type: 'doughnut',
+        data: {
+          labels: ['Beca 100%', 'Semi-Beca 50%', 'Cuarto 25%', 'Desc 15%'],
+          datasets: [{
+            data: dataTipos,
+            backgroundColor: [
+              'rgba(16, 185, 129, 0.85)',
+              'rgba(59, 130, 246, 0.85)',
+              'rgba(168, 85, 247, 0.85)',
+              'rgba(245, 158, 11, 0.85)'
+            ],
+            borderWidth: 2,
+            borderColor: isDark ? '#1e293b' : '#ffffff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '70%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `${ctx.label}: ${ctx.raw}% conversión`
+              }
+            }
+          }
+        }
+      });
+
+      // Legend personalizada para Tipos de Beca
+      const legendDiv = document.getElementById('legend-tipos-beca');
+      legendDiv.innerHTML = `
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>100%: <strong>${dataTipos[0]}%</strong></span></div>
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span><span>50%: <strong>${dataTipos[1]}%</strong></span></div>
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span><span>25%: <strong>${dataTipos[2]}%</strong></span></div>
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span>15%: <strong>${dataTipos[3]}%</strong></span></div>
+      `;
+
+      // 3. Gráfico Directores de Sede Evaluados
+      if (rawDashboardData.porSede) {
+        const sedes = rawDashboardData.porSede;
+        const labelsDirs = sedes.map(s => `${s.director} (${s.sede.replace('Sede ', '')})`);
+        const dataDirs = sedes.map(s => s.efectividadPorc);
+        const bgDirs = sedes.map(s => s.cumpleMeta ? 'rgba(16, 185, 129, 0.85)' : 'rgba(245, 158, 11, 0.85)');
+
+        if (chartDirs) chartDirs.destroy();
+        const ctxDirs = document.getElementById('chartDirectores').getContext('2d');
+        chartDirs = new Chart(ctxDirs, {
+          type: 'bar',
+          data: {
+            labels: labelsDirs,
+            datasets: [{
+              label: '% Efectividad',
+              data: dataDirs,
+              backgroundColor: bgDirs,
+              borderRadius: 6,
+              barThickness: 18
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: { label: (ctx) => `Efectividad: ${ctx.raw}%` }
+              }
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
+                max: 100,
+                ticks: { color: textColor, callback: (v) => v + '%' },
+                grid: { color: gridColor }
+              },
+              y: {
+                ticks: { color: textColor, font: { size: 10 } },
+                grid: { display: false }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function renderizarTablaConvocatorias() {
+      const tbody = document.getElementById('tbody-convocatorias');
+      tbody.innerHTML = '';
+
+      if (filteredData.convocatorias.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="12" class="py-8 text-center text-slate-500">No se encontraron convocatorias con los filtros seleccionados.</td></tr>`;
+        return;
+      }
+
+      filteredData.convocatorias.forEach((c, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-white/40 dark:hover:bg-white/5 transition-colors";
+
+        const porc = (c.efectividad * 100).toFixed(1);
+        const brecha = (c.brecha * 100).toFixed(1);
+        const brechaSigno = c.brecha >= 0 ? `+${brecha}%` : `${brecha}%`;
+        const brechaClass = c.brecha >= 0 ? "text-emerald-600 dark:text-emerald-400 font-bold" : "text-red-500 dark:text-red-400 font-bold";
+
+        tr.innerHTML = `
+          <td class="py-3 px-3">
+            <div class="font-extrabold text-slate-900 dark:text-slate-100">${c.nombre}</div>
+            <div class="text-[10px] text-slate-500">${c.id} · Ciclo: ${c.descripcionCiclo || '-'}</div>
+          </td>
+          <td class="py-3 px-3">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${c.tipoProceso === 'CONCURSO' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200' : 'bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200'}">
+              ${c.tipoProceso}
+            </span>
+          </td>
+          <td class="py-3 px-3">
+            <div class="font-bold">${c.sede}</div>
+            <div class="text-[10px] text-slate-500">${c.zona || 'Lima'}</div>
+          </td>
+          <td class="py-3 px-3 font-semibold text-slate-700 dark:text-slate-300">
+            ${c.directorSede}
+          </td>
+          <td class="py-3 px-3 text-center font-extrabold">${c.totalOtorgadas}</td>
+          <td class="py-3 px-3 text-center font-extrabold text-emerald-600 dark:text-emerald-400">${c.totalMatriculados}</td>
+          <td class="py-3 px-3 text-center font-bold text-amber-600 dark:text-amber-400">${c.totalEnProceso}</td>
+          <td class="py-3 px-3 text-center font-bold text-red-500 dark:text-red-400">${c.totalNoConcretados}</td>
+          <td class="py-3 px-3 text-center">
+            <div class="font-black text-sm text-slate-900 dark:text-slate-100">${porc}%</div>
+            <div class="w-16 bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full mx-auto mt-1 overflow-hidden">
+              <div class="${c.efectividad >= 0.70 ? 'bg-emerald-500' : (c.efectividad >= 0.50 ? 'bg-amber-500' : 'bg-red-500')} h-1.5" style="width: ${porc}%"></div>
+            </div>
+          </td>
+          <td class="py-3 px-3 text-center">
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black border ${c.semaforo.badgeClass}">
+              <i class="${c.semaforo.icono}"></i>
+              ${c.semaforo.nombre.split(' ')[0]}
+            </span>
+          </td>
+          <td class="py-3 px-3 text-center ${brechaClass}">
+            ${brechaSigno}
+          </td>
+          <td class="py-3 px-3 text-center">
+            <button onclick="verDetalleConvocatoria('${c.id}')" class="glass-pill text-[10px] py-1 px-2.5 hover:bg-white text-blue-600" title="Ver alumnos de esta convocatoria">
+              <i class="fa-solid fa-eye"></i>
+              <span>Alumnos</span>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderizarTablaPadron() {
+      const tbody = document.getElementById('tbody-padron');
+      tbody.innerHTML = '';
+
+      if (filteredData.ganadores.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-slate-500">No se encontraron beneficiarios con los criterios aplicados.</td></tr>`;
+        return;
+      }
+
+      filteredData.ganadores.forEach(g => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-white/40 dark:hover:bg-white/5 transition-colors";
+
+        let badgeEstado = '<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-red-500/20 text-red-700 dark:text-red-300 border border-red-500/30">🔴 No Concretado</span>';
+        if (g.estadoMatricula === "Matriculado") {
+          badgeEstado = '<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">🟢 Matriculado</span>';
+        } else if (g.estadoMatricula === "En Proceso") {
+          badgeEstado = '<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30">🟡 En Proceso</span>';
+        }
+
+        const wspMsg = encodeURIComponent(`Hola ${g.estudiante}, te saludamos de Academia Vonex. Te recordamos que tienes asignado el beneficio de ${g.nivelBeneficio} en el ${g.nombreConvocatoria}. ¿Deseas formalizar tu matrícula hoy?`);
+        const wspLink = `https://wa.me/51${g.telefono}?text=${wspMsg}`;
+
+        tr.innerHTML = `
+          <td class="py-3 px-3 font-mono font-bold text-slate-500">${g.idBeneficiario}</td>
+          <td class="py-3 px-3">
+            <div class="font-extrabold text-slate-900 dark:text-slate-100">${g.estudiante}</div>
+            <div class="text-[10.5px] text-slate-500">DNI: ${g.dni} · Cel: ${g.telefono}</div>
+          </td>
+          <td class="py-3 px-3">
+            <div class="font-bold text-blue-700 dark:text-blue-300">${g.nombreConvocatoria}</div>
+            <div class="text-[10px] text-slate-500">Puntaje: ${g.puntaje} (Puesto ${g.puesto})</div>
+          </td>
+          <td class="py-3 px-3 font-bold text-slate-800 dark:text-slate-200">
+            ${g.nivelBeneficio}
+          </td>
+          <td class="py-3 px-3">
+            <div class="font-semibold">${g.sede}</div>
+          </td>
+          <td class="py-3 px-3 text-slate-600 dark:text-slate-300 text-[11px]">
+            ${g.directorEvaluado}
+          </td>
+          <td class="py-3 px-3 text-center">
+            ${badgeEstado}
+            ${g.fechaMatricula ? `<div class="text-[9.5px] text-slate-400 mt-0.5">${g.fechaMatricula}</div>` : ''}
+          </td>
+          <td class="py-3 px-3">
+            <div class="font-semibold">${g.asesorVentas || 'Sin Asignar'}</div>
+            ${g.codigoBoleta ? `<div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">${g.codigoBoleta}</div>` : ''}
+          </td>
+          <td class="py-3 px-3 text-center">
+            <div class="flex items-center justify-center gap-1.5">
+              <a href="${wspLink}" target="_blank" class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center hover:bg-emerald-600 shadow-sm" title="Contactar por WhatsApp">
+                <i class="fa-brands fa-whatsapp text-xs"></i>
+              </a>
+              <button onclick="abrirModalEditarMatricula('${g.idBeneficiario}')" class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 shadow-sm" title="Editar Estado de Matrícula">
+                <i class="fa-solid fa-pen-to-square text-xs"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function verDetalleConvocatoria(idConv) {
+      document.getElementById('filtro-convocatoria').value = idConv;
+      aplicarFiltros();
+      cambiarTab('tab-padron');
+    }
+
+    function cambiarTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
+
+      ['tab-convocatorias', 'tab-padron', 'tab-simulador'].forEach(id => {
+        const btn = document.getElementById('btn-' + id);
+        if (id === tabId) {
+          btn.classList.add('glass-pill-active', 'font-extrabold');
+          btn.classList.remove('font-semibold');
+        } else {
+          btn.classList.remove('glass-pill-active', 'font-extrabold');
+          btn.classList.add('font-semibold');
+        }
+      });
+    }
+
+    // SIMULADOR DE METAS
+    function poblarSimulador(convocatorias) {
+      const select = document.getElementById('sim-select-convocatoria');
+      select.innerHTML = '';
+      convocatorias.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = `${c.nombre} (${c.sede})`;
+        select.appendChild(opt);
+      });
+      actualizarSimulacion();
+    }
+
+    function actualizarSimulacion() {
+      const idConv = document.getElementById('sim-select-convocatoria').value;
+      const conv = rawDashboardData.convocatorias.find(c => c.id === idConv);
+      if (!conv) return;
+
+      document.getElementById('sim-otorgadas').innerText = conv.totalOtorgadas;
+      document.getElementById('sim-matriculados-act').innerText = conv.totalMatriculados;
+      document.getElementById('sim-efectividad-act').innerText = (conv.efectividad * 100).toFixed(1) + '%';
+
+      const slider = document.getElementById('sim-slider-adicionales');
+      const maxAdd = Math.max(0, conv.totalOtorgadas - conv.totalMatriculados);
+      slider.max = maxAdd;
+      slider.value = 0;
+
+      actualizarCalculoSimulacion();
+    }
+
+    function actualizarCalculoSimulacion() {
+      const idConv = document.getElementById('sim-select-convocatoria').value;
+      const conv = rawDashboardData.convocatorias.find(c => c.id === idConv);
+      if (!conv) return;
+
+      const adicionales = parseInt(document.getElementById('sim-slider-adicionales').value) || 0;
+      document.getElementById('sim-adicionales-val').innerText = `+${adicionales}`;
+
+      const nuevosMatriculados = conv.totalMatriculados + adicionales;
+      const nuevaEfectividad = conv.totalOtorgadas > 0 ? (nuevosMatriculados / conv.totalOtorgadas) : 0;
+      const nuevaEfectividadPorc = (nuevaEfectividad * 100).toFixed(1);
+
+      document.getElementById('sim-resultado-porc').innerText = nuevaEfectividadPorc + '%';
+
+      // Meta 70%
+      const requeridosParaMeta = Math.ceil(conv.totalOtorgadas * 0.70);
+      const faltantes = Math.max(0, requeridosParaMeta - nuevosMatriculados);
+      document.getElementById('sim-resultado-faltantes').innerText = faltantes;
+
+      const semElem = document.getElementById('sim-resultado-semaforo');
+      const cumpleElem = document.getElementById('sim-resultado-cumple');
+      const recoElem = document.getElementById('sim-recomendacion-texto');
+
+      if (nuevaEfectividad >= 0.70) {
+        semElem.className = "text-sm font-black my-2 px-3 py-1 rounded-full inline-block bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30";
+        semElem.innerText = "🟢 Óptimo (≥ 70%)";
+        cumpleElem.innerText = "¡Cumple la meta institucional!";
+        recoElem.innerText = `Excelente. Con ${nuevosMatriculados} matrículas (${adicionales} adicionales), la sede ${conv.sede} asegura el cumplimiento del KPI01 para el Director Evaluado ${conv.directorSede}.`;
+      } else if (nuevaEfectividad >= 0.50) {
+        semElem.className = "text-sm font-black my-2 px-3 py-1 rounded-full inline-block bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30";
+        semElem.innerText = "🟡 Aceptable (50%-69%)";
+        cumpleElem.innerText = "En zona de alerta";
+        recoElem.innerText = `Se requieren ${faltantes} matrícula(s) más para alcanzar el 70% requerido. Se sugiere contactar a los ${conv.totalEnProceso} beneficiarios en seguimiento.`;
+      } else {
+        semElem.className = "text-sm font-black my-2 px-3 py-1 rounded-full inline-block bg-red-500/20 text-red-700 dark:text-red-300 border border-red-500/30";
+        semElem.innerText = "🔴 Crítico (< 50%)";
+        cumpleElem.innerText = "Bajo nivel de captación";
+        recoElem.innerText = `Alerta crítica. Requiere campaña de reactivación urgente dirigida por la Jefa de Ventas y el Director de Sede. Faltan ${faltantes} matrículas para el umbral óptimo.`;
+      }
+    }
+
+    // MODALES
+    function openModalFicha() {
+      document.getElementById('modal-ficha').classList.remove('hidden');
+    }
+    function closeModalFicha() {
+      document.getElementById('modal-ficha').classList.add('hidden');
+    }
+
+    function abrirModalEditarMatricula(idBen) {
+      const ben = rawDashboardData.ganadores.find(g => g.idBeneficiario === idBen);
+      if (!ben) return;
+
+      document.getElementById('edit-id-beneficiario').value = ben.idBeneficiario;
+      document.getElementById('modal-edit-sub').innerText = `Estudiante: ${ben.estudiante} (DNI: ${ben.dni}) · ${ben.nombreConvocatoria}`;
+      document.getElementById('edit-estado-matricula').value = ben.estadoMatricula === "No Registrado" ? "En Proceso" : ben.estadoMatricula;
+      document.getElementById('edit-asesor').value = ben.asesorVentas || '';
+      document.getElementById('edit-boleta').value = ben.codigoBoleta || '';
+      document.getElementById('edit-monto').value = ben.montoPagado || '';
+      document.getElementById('edit-observaciones').value = ben.observaciones || '';
+
+      document.getElementById('modal-editar-matricula').classList.remove('hidden');
+    }
+    function closeModalEditar() {
+      document.getElementById('modal-editar-matricula').classList.add('hidden');
+    }
+
+    function guardarEdicionMatricula(e) {
+      e.preventDefault();
+      const idBen = document.getElementById('edit-id-beneficiario').value;
+      const nuevoEstado = document.getElementById('edit-estado-matricula').value;
+      const asesor = document.getElementById('edit-asesor').value;
+      const boleta = document.getElementById('edit-boleta').value;
+      const monto = parseFloat(document.getElementById('edit-monto').value) || 0;
+      const observaciones = document.getElementById('edit-observaciones').value;
+
+      showToast("Guardando cambios de matrícula...", 2000);
+
+      // Actualizar localmente de inmediato para feedback reactivo
+      const gIndex = rawDashboardData.ganadores.findIndex(g => g.idBeneficiario === idBen);
+      if (gIndex !== -1) {
+        rawDashboardData.ganadores[gIndex].estadoMatricula = nuevoEstado;
+        rawDashboardData.ganadores[gIndex].asesorVentas = asesor;
+        rawDashboardData.ganadores[gIndex].codigoBoleta = boleta;
+        rawDashboardData.ganadores[gIndex].montoPagado = monto;
+        rawDashboardData.ganadores[gIndex].observaciones = observaciones;
+        if (nuevoEstado === "Matriculado" && !rawDashboardData.ganadores[gIndex].fechaMatricula) {
+          rawDashboardData.ganadores[gIndex].fechaMatricula = new Date().toISOString().split('T')[0];
+        }
+
+        // Recalcular métricas de la convocatoria
+        const conv = rawDashboardData.convocatorias.find(c => c.id === rawDashboardData.ganadores[gIndex].idConvocatoria);
+        if (conv) {
+          const gConv = rawDashboardData.ganadores.filter(g => g.idConvocatoria === conv.id);
+          conv.totalMatriculados = gConv.filter(g => g.estadoMatricula === "Matriculado").length;
+          conv.totalEnProceso = gConv.filter(g => g.estadoMatricula === "En Proceso").length;
+          conv.totalNoConcretados = gConv.filter(g => g.estadoMatricula === "No Concretado" || g.estadoMatricula === "No Registrado").length;
+          conv.efectividad = conv.totalOtorgadas > 0 ? (conv.totalMatriculados / conv.totalOtorgadas) : 0;
+          conv.brecha = conv.efectividad - 0.70;
+          if (conv.efectividad >= 0.70) {
+            conv.semaforo = { estado: "OPTIMO", nombre: "Óptimo (≥ 70%)", color: "#10b981", badgeClass: "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/30", icono: "fa-solid fa-circle-check" };
+          } else if (conv.efectividad >= 0.50) {
+            conv.semaforo = { estado: "ACEPTABLE", nombre: "Aceptable (50% - 69%)", color: "#f59e0b", badgeClass: "bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-500/30", icono: "fa-solid fa-circle-exclamation" };
+          } else {
+            conv.semaforo = { estado: "CRITICO", nombre: "Crítico (< 50%)", color: "#ef4444", badgeClass: "bg-red-500/20 text-red-700 dark:text-red-300 border-red-500/30", icono: "fa-solid fa-triangle-exclamation" };
+          }
+        }
+      }
+
+      closeModalEditar();
+      aplicarFiltros();
+
+      // Guardar en Google Sheets vía Apps Script si está conectado
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(function(res) {
+            showToast("Guardado con éxito en Google Sheet", 3000);
+          })
+          .withFailureHandler(function(err) {
+            showToast("Actualizado localmente (Sheet offline)", 3000);
+          })
+          .actualizarEstadoMatricula(idBen, nuevoEstado, observaciones, asesor, boleta, monto);
+      } else {
+        showToast("Actualizado en memoria (Modo Demostración)", 3000);
+      }
+    }
+
+    // SINCRONIZACIÓN Y SHEET
+    function sincronizarConGoogleSheet() {
+      const icon = document.getElementById('sync-icon');
+      icon.classList.add('fa-spin');
+      
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(function(res) {
+            icon.classList.remove('fa-spin');
+            cargarDatosTablero();
+          })
+          .withFailureHandler(function(err) {
+            icon.classList.remove('fa-spin');
+            showToast("Error al conectar con Google Sheet: " + err.message, 4000);
+          })
+          .inicializarBaseDatos();
+      } else {
+        setTimeout(() => {
+          icon.classList.remove('fa-spin');
+          cargarDatosTablero();
+          showToast("Tablero recalculado con éxito", 2500);
+        }, 800);
+      }
+    }
+
+    // EXPORTACIÓN A CSV
+    function exportarExcelConvocatorias() {
+      const headers = ["ID Convocatoria", "Tipo Proceso", "Nombre Convocatoria", "Ciclo", "Sede", "Zona", "Director Sede Evaluado", "Becas Otorgadas", "Matriculados", "En Proceso", "No Concretados", "% Efectividad", "Estado Semáforo", "Brecha"];
+      const rows = filteredData.convocatorias.map(c => [
+        c.id,
+        c.tipoProceso,
+        `"${c.nombre}"`,
+        `"${c.descripcionCiclo}"`,
+        `"${c.sede}"`,
+        `"${c.zona}"`,
+        `"${c.directorSede}"`,
+        c.totalOtorgadas,
+        c.totalMatriculados,
+        c.totalEnProceso,
+        c.totalNoConcretados,
+        (c.efectividad * 100).toFixed(1) + "%",
+        c.semaforo.nombre,
+        (c.brecha * 100).toFixed(1) + "%"
+      ]);
+
+      descargarCSV("KPI01_Consolidado_Convocatorias.csv", headers, rows);
+    }
+
+    function exportarExcelPadron() {
+      const headers = ["ID Beneficiario", "ID Convocatoria", "Convocatoria", "DNI", "Estudiante", "Telefono", "Nivel Beneficio", "Puntaje", "Puesto", "Sede", "Director Evaluado", "Estado Matricula", "Fecha Matricula", "Asesor Ventas", "Boleta"];
+      const rows = filteredData.ganadores.map(g => [
+        g.idBeneficiario,
+        g.idConvocatoria,
+        `"${g.nombreConvocatoria}"`,
+        g.dni,
+        `"${g.estudiante}"`,
+        g.telefono,
+        `"${g.nivelBeneficio}"`,
+        g.puntaje,
+        g.puesto,
+        `"${g.sede}"`,
+        `"${g.directorEvaluado}"`,
+        `"${g.estadoMatricula}"`,
+        g.fechaMatricula || "",
+        `"${g.asesorVentas || ''}"`,
+        `"${g.codigoBoleta || ''}"`
+      ]);
+
+      descargarCSV("KPI01_Padron_Beneficiarios_Vonex.csv", headers, rows);
+    }
+
+    function descargarCSV(nombreArchivo, headers, rows) {
+      let csvContent = "\uFEFF"; // BOM UTF-8
+      csvContent += headers.join(",") + "\r\n";
+      rows.forEach(r => {
+        csvContent += r.join(",") + "\r\n";
+      });
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute("download", nombreArchivo);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("Archivo descargado con éxito");
+    }
+
+    // UI: TEMA Y PALETA
+    function showToast(message, duration = 3000) {
+      const toast = document.getElementById('app-toast');
+      const toastMsg = document.getElementById('app-toast-message');
+      if (!toast || !toastMsg) return;
+      toastMsg.innerText = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), duration);
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const isDark = body.getAttribute('data-theme') === 'dark';
+      if (!isDark) {
+        body.setAttribute('data-theme', 'dark');
+        localStorage.setItem('vonex_theme_pref', 'dark');
+        updateThemeUI(true);
+      } else {
+        body.removeAttribute('data-theme');
+        localStorage.setItem('vonex_theme_pref', 'light');
+        updateThemeUI(false);
+      }
+      renderizarGraficos();
+    }
+
+    function updateThemeUI(isDark) {
+      const icon = document.getElementById('theme-icon');
+      const text = document.getElementById('theme-text');
+      if (icon) icon.className = isDark ? 'fa-solid fa-moon text-indigo-300' : 'fa-solid fa-sun text-yellow-500';
+      if (text) text.innerText = isDark ? 'Oscuro' : 'Claro';
+    }
+
+    function cycleThemePalette() {
+      const palettes = ['ocean', 'fuchsia', 'butter'];
+      const currentIdx = palettes.indexOf(currentPalette);
+      const nextIdx = (currentIdx + 1) % palettes.length;
+      currentPalette = palettes[nextIdx];
+
+      applyPalette(currentPalette);
+      localStorage.setItem('vonex_palette_theme', currentPalette);
+
+      const names = {
+        'ocean': 'Azul Ice Vonex',
+        'fuchsia': 'Fucsia Suave (Velvet)',
+        'butter': 'Amarillo Vonex Pastel'
+      };
+      showToast("Tema activado: " + names[currentPalette]);
+    }
+
+    function applyPalette(paletteName) {
+      const body = document.body;
+      currentPalette = paletteName;
+      if (paletteName === 'ocean') {
+        body.removeAttribute('data-palette');
+      } else {
+        body.setAttribute('data-palette', paletteName);
+      }
+
+      const btnText = document.getElementById('palette-btn-text');
+      if (btnText) {
+        if (paletteName === 'fuchsia') btnText.innerText = 'Fucsia';
+        else if (paletteName === 'butter') btnText.innerText = 'Amarillo';
+        else btnText.innerText = 'Tema';
+      }
+    }
+
+    // Dataset Completo de Respaldo / Demostración
+    function generarDatasetFallbackCompleto() {
+      const convocatorias = [
+        { id: "CONV-2026-001", tipoProceso: "CONCURSO", nombre: "CONCURSO DE BECAS UNI - 18/08/2026", descripcionCiclo: "AGOSTO UNI", sede: "Sede Central (Santa Beatriz)", zona: "Lima Centro", directorSede: "Lic. Carlos Mendoza", directorZonal: "Mg. Roberto Alarcón", totalOtorgadas: 7, totalMatriculados: 5, totalEnProceso: 1, totalNoConcretados: 1, efectividad: 0.714, brecha: 0.014, semaforo: { estado: "OPTIMO", nombre: "Óptimo (≥ 70%)", color: "#10b981", badgeClass: "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/30", icono: "fa-solid fa-circle-check" } },
+        { id: "CONV-2026-002", tipoProceso: "CONCURSO", nombre: "DESCUENTO 15% CONCURSO DE BECAS CEPRE - 16/07/2026", descripcionCiclo: "JULIO CEPRE SM", sede: "Sede Los Olivos", zona: "Lima Norte", directorSede: "Lic. Patricia Valverde", directorZonal: "Mg. Roberto Alarcón", totalOtorgadas: 6, totalMatriculados: 3, totalEnProceso: 1, totalNoConcretados: 2, efectividad: 0.500, brecha: -0.200, semaforo: { estado: "ACEPTABLE", nombre: "Aceptable (50% - 69%)", color: "#f59e0b", badgeClass: "bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-500/30", icono: "fa-solid fa-circle-exclamation" } },
+        { id: "CONV-2026-003", tipoProceso: "CONCURSO", nombre: "CONCURSO DE BECAS CEPRE - 16/07/2026", descripcionCiclo: "JULIO CEPRE SM", sede: "Sede San Juan de Lurigancho", zona: "Lima Este", directorSede: "Ing. Jorge Huamán", directorZonal: "Mg. Roberto Alarcón", totalOtorgadas: 6, totalMatriculados: 5, totalEnProceso: 0, totalNoConcretados: 1, efectividad: 0.833, brecha: 0.133, semaforo: { estado: "OPTIMO", nombre: "Óptimo (≥ 70%)", color: "#10b981", badgeClass: "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/30", icono: "fa-solid fa-circle-check" } },
+        { id: "CONV-2026-004", tipoProceso: "CONCURSO", nombre: "DESCUENTO 15% CONCURSO DE BECAS UNI - 09/06/2026", descripcionCiclo: "JUNIO UNI", sede: "Sede Central (Santa Beatriz)", zona: "Lima Centro", directorSede: "Lic. Carlos Mendoza", directorZonal: "Mg. Roberto Alarcón", totalOtorgadas: 5, totalMatriculados: 2, totalEnProceso: 0, totalNoConcretados: 3, efectividad: 0.400, brecha: -0.300, semaforo: { estado: "CRITICO", nombre: "Crítico (< 50%)", color: "#ef4444", badgeClass: "bg-red-500/20 text-red-700 dark:text-red-300 border-red-500/30", icono: "fa-solid fa-triangle-exclamation" } },
+        { id: "CONV-2026-005", tipoProceso: "CONCURSO", nombre: "CONCURSO DE BECAS UNI - 09/06/2026", descripcionCiclo: "JUNIO UNI", sede: "Sede San Juan de Miraflores", zona: "Lima Sur", directorSede: "Lic. Elena Paredes", directorZonal: "Mg. Roberto Alarcón", totalOtorgadas: 4, totalMatriculados: 3, totalEnProceso: 1, totalNoConcretados: 0, efectividad: 0.750, brecha: 0.050, semaforo: { estado: "OPTIMO", nombre: "Óptimo (≥ 70%)", color: "#10b981", badgeClass: "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/30", icono: "fa-solid fa-circle-check" } },
+        { id: "CONV-2026-006", tipoProceso: "CONCURSO", nombre: "DESCUENTO 15% CONCURSO DE BECAS UNMSM - 30/05/2026", descripcionCiclo: "JUNIO SAN MARCOS", sede: "Sede Los Olivos", zona: "Lima Norte", directorSede: "Lic. Patricia Valverde", directorZonal: "Mg. Roberto Alarcón", totalOtorgadas: 5, totalMatriculados: 3, totalEnProceso: 0, totalNoConcretados: 2, efectividad: 0.600, brecha: -0.100, semaforo: { estado: "ACEPTABLE", nombre: "Aceptable (50% - 69%)", color: "#f59e0b", badgeClass: "bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-500/30", icono: "fa-solid fa-circle-exclamation" } },
+        { id: "CONV-2026-007", tipoProceso: "CONCURSO", nombre: "CONCURSO DE BECAS UNMSM - 30/05/2026", descripcionCiclo: "JUNIO SAN MARCOS", sede: "Sede Huánuco", zona: "Zona Centro / Provincias", directorSede: "Mg. Fernando Vilchez", directorZonal: "Mg. Roberto Alarcón", totalOtorgadas: 4, totalMatriculados: 3, totalEnProceso: 0, totalNoConcretados: 1, efectividad: 0.750, brecha: 0.050, semaforo: { estado: "OPTIMO", nombre: "Óptimo (≥ 70%)", color: "#10b981", badgeClass: "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/30", icono: "fa-solid fa-circle-check" } },
+        { id: "CONV-2026-008", tipoProceso: "RATIFICACIÓN", nombre: "RATIFICACION USM ENERO-2026", descripcionCiclo: "CUOTA 9 SM", sede: "Sede Central (Santa Beatriz)", zona: "Lima Centro", directorSede: "Lic. Carlos Mendoza", directorZonal: "Mg. Roberto Alarcón", totalOtorgadas: 4, totalMatriculados: 4, totalEnProceso: 0, totalNoConcretados: 0, efectividad: 1.000, brecha: 0.300, semaforo: { estado: "OPTIMO", nombre: "Óptimo (≥ 70%)", color: "#10b981", badgeClass: "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/30", icono: "fa-solid fa-circle-check" } },
+        { id: "CONV-2026-009", tipoProceso: "RATIFICACIÓN", nombre: "RATIFICACION UNH MAR", descripcionCiclo: "CUOTA 7 UNH", sede: "Sede Huánuco", zona: "Zona Centro / Provincias", directorSede: "Mg. Fernando Vilchez", directorZonal: "Mg. Roberto Alarcón", totalOtorgadas: 4, totalMatriculados: 4, totalEnProceso: 0, totalNoConcretados: 0, efectividad: 1.000, brecha: 0.300, semaforo: { estado: "OPTIMO", nombre: "Óptimo (≥ 70%)", color: "#10b981", badgeClass: "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/30", icono: "fa-solid fa-circle-check" } }
+      ];
+
+      const ganadores = [
+        { idBeneficiario: "BEN-001", idConvocatoria: "CONV-2026-001", nombreConvocatoria: "CONCURSO DE BECAS UNI - 18/08/2026", dni: "72345101", estudiante: "Mateo Alejandro Ramos Quispe", telefono: "987654321", nivelBeneficio: "Beca Completa (100%)", puntaje: "98.50", puesto: 1, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "Matriculado", fechaMatricula: "2026-08-20", asesorVentas: "Asesora Lucía Castro", codigoBoleta: "B001-004521", montoPagado: 50, observaciones: "Matrícula formalizada Beca 100%" },
+        { idBeneficiario: "BEN-002", idConvocatoria: "CONV-2026-001", nombreConvocatoria: "CONCURSO DE BECAS UNI - 18/08/2026", dni: "72345102", estudiante: "Camila Lucía Torres Vargas", telefono: "987654322", nivelBeneficio: "Beca Completa (100%)", puntaje: "95.00", puesto: 2, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "Matriculado", fechaMatricula: "2026-08-21", asesorVentas: "Asesora Lucía Castro", codigoBoleta: "B001-004535", montoPagado: 50, observaciones: "Matrícula formalizada Beca 100%" },
+        { idBeneficiario: "BEN-003", idConvocatoria: "CONV-2026-001", nombreConvocatoria: "CONCURSO DE BECAS UNI - 18/08/2026", dni: "72345103", estudiante: "Sebastián Andrés Flores Rios", telefono: "987654323", nivelBeneficio: "Semi-Beca (50%)", puntaje: "91.20", puesto: 3, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "Matriculado", fechaMatricula: "2026-08-21", asesorVentas: "Asesor Marco Peña", codigoBoleta: "B001-004540", montoPagado: 320, observaciones: "Semi-Beca 50% Formalizada" },
+        { idBeneficiario: "BEN-004", idConvocatoria: "CONV-2026-001", nombreConvocatoria: "CONCURSO DE BECAS UNI - 18/08/2026", dni: "72345104", estudiante: "Valeria Sofía Morales Soto", telefono: "987654324", nivelBeneficio: "Semi-Beca (50%)", puntaje: "89.50", puesto: 4, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "Matriculado", fechaMatricula: "2026-08-22", asesorVentas: "Asesor Marco Peña", codigoBoleta: "B001-004555", montoPagado: 320, observaciones: "Semi-Beca 50% Formalizada" },
+        { idBeneficiario: "BEN-005", idConvocatoria: "CONV-2026-001", nombreConvocatoria: "CONCURSO DE BECAS UNI - 18/08/2026", dni: "72345105", estudiante: "Diego Alonso Castillo Ruiz", telefono: "987654325", nivelBeneficio: "Cuarto de Beca (25%)", puntaje: "84.00", puesto: 5, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "Matriculado", fechaMatricula: "2026-08-23", asesorVentas: "Asesora Diana Solano", codigoBoleta: "B001-004570", montoPagado: 480, observaciones: "Cuarto de Beca 25% Formalizada" },
+        { idBeneficiario: "BEN-006", idConvocatoria: "CONV-2026-001", nombreConvocatoria: "CONCURSO DE BECAS UNI - 18/08/2026", dni: "72345106", estudiante: "Luciana Belén Chávez Paz", telefono: "987654326", nivelBeneficio: "Descuento 15%", puntaje: "79.50", puesto: 6, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "En Proceso", fechaMatricula: "", asesorVentas: "Asesora Diana Solano", codigoBoleta: "", montoPagado: 0, observaciones: "Pendiente confirmación" },
+        { idBeneficiario: "BEN-007", idConvocatoria: "CONV-2026-001", nombreConvocatoria: "CONCURSO DE BECAS UNI - 18/08/2026", dni: "72345107", estudiante: "Joaquín Gabriel Medina León", telefono: "987654327", nivelBeneficio: "Descuento 15%", puntaje: "76.00", puesto: 7, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "No Concretado", fechaMatricula: "", asesorVentas: "Asesora Diana Solano", codigoBoleta: "", montoPagado: 0, observaciones: "Cruce de horarios" },
+        { idBeneficiario: "BEN-008", idConvocatoria: "CONV-2026-002", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS CEPRE - 16/07/2026", dni: "73456201", estudiante: "Andrea Jimena Rojas Salazar", telefono: "986543210", nivelBeneficio: "Descuento 15%", puntaje: "88.00", puesto: 1, sede: "Sede Los Olivos", directorEvaluado: "Lic. Patricia Valverde", estadoMatricula: "Matriculado", fechaMatricula: "2026-07-21", asesorVentas: "Asesora Wendy Quispe", codigoBoleta: "B002-003112", montoPagado: 390, observaciones: "Desc 15% Formalizado" },
+        { idBeneficiario: "BEN-009", idConvocatoria: "CONV-2026-002", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS CEPRE - 16/07/2026", dni: "73456202", estudiante: "Bruno Emmanuel Navarro Diaz", telefono: "986543211", nivelBeneficio: "Descuento 15%", puntaje: "85.50", puesto: 2, sede: "Sede Los Olivos", directorEvaluado: "Lic. Patricia Valverde", estadoMatricula: "Matriculado", fechaMatricula: "2026-07-22", asesorVentas: "Asesora Wendy Quispe", codigoBoleta: "B002-003120", montoPagado: 390, observaciones: "Desc 15% Formalizado" },
+        { idBeneficiario: "BEN-010", idConvocatoria: "CONV-2026-002", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS CEPRE - 16/07/2026", dni: "73456203", estudiante: "Paola Nicole Gutiérrez Cruz", telefono: "986543212", nivelBeneficio: "Descuento 15%", puntaje: "83.00", puesto: 3, sede: "Sede Los Olivos", directorEvaluado: "Lic. Patricia Valverde", estadoMatricula: "Matriculado", fechaMatricula: "2026-07-23", asesorVentas: "Asesor Pedro Vera", codigoBoleta: "B002-003135", montoPagado: 390, observaciones: "Desc 15% Formalizado" },
+        { idBeneficiario: "BEN-011", idConvocatoria: "CONV-2026-002", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS CEPRE - 16/07/2026", dni: "73456204", estudiante: "Rodrigo Manuel Vega Silva", telefono: "986543213", nivelBeneficio: "Descuento 15%", puntaje: "80.50", puesto: 4, sede: "Sede Los Olivos", directorEvaluado: "Lic. Patricia Valverde", estadoMatricula: "No Concretado", fechaMatricula: "", asesorVentas: "Asesor Pedro Vera", codigoBoleta: "", montoPagado: 0, observaciones: "Optó por virtual" },
+        { idBeneficiario: "BEN-012", idConvocatoria: "CONV-2026-002", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS CEPRE - 16/07/2026", dni: "73456205", estudiante: "Daniela María Herrera Luna", telefono: "986543214", nivelBeneficio: "Descuento 15%", puntaje: "78.00", puesto: 5, sede: "Sede Los Olivos", directorEvaluado: "Lic. Patricia Valverde", estadoMatricula: "No Concretado", fechaMatricula: "", asesorVentas: "Asesora Wendy Quispe", codigoBoleta: "", montoPagado: 0, observaciones: "No responde" },
+        { idBeneficiario: "BEN-013", idConvocatoria: "CONV-2026-002", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS CEPRE - 16/07/2026", dni: "73456206", estudiante: "Gonzalo Ignacio Paredes Ortiz", telefono: "986543215", nivelBeneficio: "Descuento 15%", puntaje: "75.50", puesto: 6, sede: "Sede Los Olivos", directorEvaluado: "Lic. Patricia Valverde", estadoMatricula: "En Proceso", fechaMatricula: "", asesorVentas: "Asesor Pedro Vera", codigoBoleta: "", montoPagado: 0, observaciones: "Pago fin de mes" },
+        { idBeneficiario: "BEN-014", idConvocatoria: "CONV-2026-003", nombreConvocatoria: "CONCURSO DE BECAS CEPRE - 16/07/2026", dni: "74567301", estudiante: "Renato David Aliaga Campos", telefono: "985432101", nivelBeneficio: "Beca Completa (100%)", puntaje: "96.00", puesto: 1, sede: "Sede San Juan de Lurigancho", directorEvaluado: "Ing. Jorge Huamán", estadoMatricula: "Matriculado", fechaMatricula: "2026-07-21", asesorVentas: "Asesora Carla Rios", codigoBoleta: "B003-002100", montoPagado: 50, observaciones: "Beca 100% Formalizada" },
+        { idBeneficiario: "BEN-015", idConvocatoria: "CONV-2026-003", nombreConvocatoria: "CONCURSO DE BECAS CEPRE - 16/07/2026", dni: "74567302", estudiante: "Fernanda Isabel Bravo Peña", telefono: "985432102", nivelBeneficio: "Semi-Beca (50%)", puntaje: "92.00", puesto: 2, sede: "Sede San Juan de Lurigancho", directorEvaluado: "Ing. Jorge Huamán", estadoMatricula: "Matriculado", fechaMatricula: "2026-07-21", asesorVentas: "Asesora Carla Rios", codigoBoleta: "B003-002105", montoPagado: 295, observaciones: "Semi Beca 50%" },
+        { idBeneficiario: "BEN-016", idConvocatoria: "CONV-2026-003", nombreConvocatoria: "CONCURSO DE BECAS CEPRE - 16/07/2026", dni: "74567303", estudiante: "Fabricio Leonel Solis Vidal", telefono: "985432103", nivelBeneficio: "Semi-Beca (50%)", puntaje: "89.00", puesto: 3, sede: "Sede San Juan de Lurigancho", directorEvaluado: "Ing. Jorge Huamán", estadoMatricula: "Matriculado", fechaMatricula: "2026-07-22", asesorVentas: "Asesora Carla Rios", codigoBoleta: "B003-002112", montoPagado: 295, observaciones: "Semi Beca 50%" },
+        { idBeneficiario: "BEN-017", idConvocatoria: "CONV-2026-003", nombreConvocatoria: "CONCURSO DE BECAS CEPRE - 16/07/2026", dni: "74567304", estudiante: "Ariana Celeste Ponce Meza", telefono: "985432104", nivelBeneficio: "Cuarto de Beca (25%)", puntaje: "85.00", puesto: 4, sede: "Sede San Juan de Lurigancho", directorEvaluado: "Ing. Jorge Huamán", estadoMatricula: "Matriculado", fechaMatricula: "2026-07-22", asesorVentas: "Asesor Luis Tello", codigoBoleta: "B003-002120", montoPagado: 442.50, observaciones: "Cuarto Beca 25%" },
+        { idBeneficiario: "BEN-018", idConvocatoria: "CONV-2026-003", nombreConvocatoria: "CONCURSO DE BECAS CEPRE - 16/07/2026", dni: "74567305", estudiante: "Leonardo Fabian Cabrera Vera", telefono: "985432105", nivelBeneficio: "Cuarto de Beca (25%)", puntaje: "81.00", puesto: 5, sede: "Sede San Juan de Lurigancho", directorEvaluado: "Ing. Jorge Huamán", estadoMatricula: "Matriculado", fechaMatricula: "2026-07-23", asesorVentas: "Asesor Luis Tello", codigoBoleta: "B003-002131", montoPagado: 442.50, observaciones: "Cuarto Beca 25%" },
+        { idBeneficiario: "BEN-019", idConvocatoria: "CONV-2026-003", nombreConvocatoria: "CONCURSO DE BECAS CEPRE - 16/07/2026", dni: "74567306", estudiante: "Mia Valentina Cordero Núñez", telefono: "985432106", nivelBeneficio: "Descuento 15%", puntaje: "77.50", puesto: 6, sede: "Sede San Juan de Lurigancho", directorEvaluado: "Ing. Jorge Huamán", estadoMatricula: "No Concretado", fechaMatricula: "", asesorVentas: "Asesor Luis Tello", codigoBoleta: "", montoPagado: 0, observaciones: "Problemas económicos" },
+        { idBeneficiario: "BEN-020", idConvocatoria: "CONV-2026-004", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS UNI - 09/06/2026", dni: "75678401", estudiante: "Alonso Gabriel Rios Pardo", telefono: "984321098", nivelBeneficio: "Descuento 15%", puntaje: "86.00", puesto: 1, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "Matriculado", fechaMatricula: "2026-06-10", asesorVentas: "Asesor Marco Peña", codigoBoleta: "B001-003890", montoPagado: 380, observaciones: "Desc 15%" },
+        { idBeneficiario: "BEN-021", idConvocatoria: "CONV-2026-004", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS UNI - 09/06/2026", dni: "75678402", estudiante: "Ximena Sofia Benitez Mora", telefono: "984321099", nivelBeneficio: "Descuento 15%", puntaje: "83.50", puesto: 2, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "Matriculado", fechaMatricula: "2026-06-11", asesorVentas: "Asesora Lucía Castro", codigoBoleta: "B001-003898", montoPagado: 380, observaciones: "Desc 15%" },
+        { idBeneficiario: "BEN-022", idConvocatoria: "CONV-2026-004", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS UNI - 09/06/2026", dni: "75678403", estudiante: "Esteban Rodrigo Yañez Lara", telefono: "984321100", nivelBeneficio: "Descuento 15%", puntaje: "81.00", puesto: 3, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "No Concretado", fechaMatricula: "", asesorVentas: "Asesora Lucía Castro", codigoBoleta: "", montoPagado: 0, observaciones: "Otra academia" },
+        { idBeneficiario: "BEN-023", idConvocatoria: "CONV-2026-004", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS UNI - 09/06/2026", dni: "75678404", estudiante: "Adriana Patricia Cano Bello", telefono: "984321101", nivelBeneficio: "Descuento 15%", puntaje: "78.50", puesto: 4, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "No Concretado", fechaMatricula: "", asesorVentas: "Asesor Marco Peña", codigoBoleta: "", montoPagado: 0, observaciones: "Horarios" },
+        { idBeneficiario: "BEN-024", idConvocatoria: "CONV-2026-004", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS UNI - 09/06/2026", dni: "75678405", estudiante: "Mauricio José Aguilar Fuentes", telefono: "984321102", nivelBeneficio: "Descuento 15%", puntaje: "76.00", puesto: 5, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "No Concretado", fechaMatricula: "", asesorVentas: "Asesora Diana Solano", codigoBoleta: "", montoPagado: 0, observaciones: "No responde" },
+        { idBeneficiario: "BEN-025", idConvocatoria: "CONV-2026-005", nombreConvocatoria: "CONCURSO DE BECAS UNI - 09/06/2026", dni: "76789501", estudiante: "Mathias Nicolas Roldan Arce", telefono: "983210987", nivelBeneficio: "Beca Completa (100%)", puntaje: "97.00", puesto: 1, sede: "Sede San Juan de Miraflores", directorEvaluado: "Lic. Elena Paredes", estadoMatricula: "Matriculado", fechaMatricula: "2026-06-10", asesorVentas: "Asesora Rosa Mendez", codigoBoleta: "B004-001502", montoPagado: 50, observaciones: "Beca 100%" },
+        { idBeneficiario: "BEN-026", idConvocatoria: "CONV-2026-005", nombreConvocatoria: "CONCURSO DE BECAS UNI - 09/06/2026", dni: "76789502", estudiante: "Kiara Antonella Leyva Jara", telefono: "983210988", nivelBeneficio: "Semi-Beca (50%)", puntaje: "93.00", puesto: 2, sede: "Sede San Juan de Miraflores", directorEvaluado: "Lic. Elena Paredes", estadoMatricula: "Matriculado", fechaMatricula: "2026-06-10", asesorVentas: "Asesora Rosa Mendez", codigoBoleta: "B004-001509", montoPagado: 310, observaciones: "Semi-Beca 50%" },
+        { idBeneficiario: "BEN-027", idConvocatoria: "CONV-2026-005", nombreConvocatoria: "CONCURSO DE BECAS UNI - 09/06/2026", dni: "76789503", estudiante: "Aaron Josue Huapaya Cárdenas", telefono: "983210989", nivelBeneficio: "Cuarto de Beca (25%)", puntaje: "87.00", puesto: 3, sede: "Sede San Juan de Miraflores", directorEvaluado: "Lic. Elena Paredes", estadoMatricula: "Matriculado", fechaMatricula: "2026-06-11", asesorVentas: "Asesor Victor Paz", codigoBoleta: "B004-001518", montoPagado: 465, observaciones: "Cuarto Beca 25%" },
+        { idBeneficiario: "BEN-028", idConvocatoria: "CONV-2026-005", nombreConvocatoria: "CONCURSO DE BECAS UNI - 09/06/2026", dni: "76789504", estudiante: "Natalia Guadalupe Soria Rios", telefono: "983210990", nivelBeneficio: "Descuento 15%", puntaje: "80.00", puesto: 4, sede: "Sede San Juan de Miraflores", directorEvaluado: "Lic. Elena Paredes", estadoMatricula: "En Proceso", fechaMatricula: "", asesorVentas: "Asesor Victor Paz", codigoBoleta: "", montoPagado: 0, observaciones: "Esperando cuotas" },
+        { idBeneficiario: "BEN-029", idConvocatoria: "CONV-2026-006", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS UNMSM - 30/05/2026", dni: "77890601", estudiante: "Ignacio Daniel Vilchez Mora", telefono: "982109876", nivelBeneficio: "Descuento 15%", puntaje: "89.00", puesto: 1, sede: "Sede Los Olivos", directorEvaluado: "Lic. Patricia Valverde", estadoMatricula: "Matriculado", fechaMatricula: "2026-05-31", asesorVentas: "Asesora Wendy Quispe", codigoBoleta: "B002-002880", montoPagado: 370, observaciones: "Desc 15%" },
+        { idBeneficiario: "BEN-030", idConvocatoria: "CONV-2026-006", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS UNMSM - 30/05/2026", dni: "77890602", estudiante: "Fabiana Milagros Cuenca Gil", telefono: "982109877", nivelBeneficio: "Descuento 15%", puntaje: "85.00", puesto: 2, sede: "Sede Los Olivos", directorEvaluado: "Lic. Patricia Valverde", estadoMatricula: "Matriculado", fechaMatricula: "2026-06-01", asesorVentas: "Asesor Pedro Vera", codigoBoleta: "B002-002891", montoPagado: 370, observaciones: "Desc 15%" },
+        { idBeneficiario: "BEN-031", idConvocatoria: "CONV-2026-006", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS UNMSM - 30/05/2026", dni: "77890603", estudiante: "Cristian Alexis Godoy Bazan", telefono: "982109878", nivelBeneficio: "Descuento 15%", puntaje: "82.00", puesto: 3, sede: "Sede Los Olivos", directorEvaluado: "Lic. Patricia Valverde", estadoMatricula: "Matriculado", fechaMatricula: "2026-06-02", asesorVentas: "Asesora Wendy Quispe", codigoBoleta: "B002-002905", montoPagado: 370, observaciones: "Desc 15%" },
+        { idBeneficiario: "BEN-032", idConvocatoria: "CONV-2026-006", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS UNMSM - 30/05/2026", dni: "77890604", estudiante: "Genesis Abigail Polo Romero", telefono: "982109879", nivelBeneficio: "Descuento 15%", puntaje: "78.00", puesto: 4, sede: "Sede Los Olivos", directorEvaluado: "Lic. Patricia Valverde", estadoMatricula: "No Concretado", fechaMatricula: "", asesorVentas: "Asesor Pedro Vera", codigoBoleta: "", montoPagado: 0, observaciones: "Desistió" },
+        { idBeneficiario: "BEN-033", idConvocatoria: "CONV-2026-006", nombreConvocatoria: "DESCUENTO 15% CONCURSO DE BECAS UNMSM - 30/05/2026", dni: "77890605", estudiante: "Sergio Paul Espinoza Ocaña", telefono: "982109880", nivelBeneficio: "Descuento 15%", puntaje: "75.00", puesto: 5, sede: "Sede Los Olivos", directorEvaluado: "Lic. Patricia Valverde", estadoMatricula: "No Concretado", fechaMatricula: "", asesorVentas: "Asesor Pedro Vera", codigoBoleta: "", montoPagado: 0, observaciones: "No contesta" },
+        { idBeneficiario: "BEN-034", idConvocatoria: "CONV-2026-007", nombreConvocatoria: "CONCURSO DE BECAS UNMSM - 30/05/2026", dni: "78901701", estudiante: "Gael Antonio Alvarado Soto", telefono: "981098765", nivelBeneficio: "Beca Completa (100%)", puntaje: "95.50", puesto: 1, sede: "Sede Huánuco", directorEvaluado: "Mg. Fernando Vilchez", estadoMatricula: "Matriculado", fechaMatricula: "2026-05-31", asesorVentas: "Asesora Miriam Cruz", codigoBoleta: "B005-001090", montoPagado: 50, observaciones: "Beca 100%" },
+        { idBeneficiario: "BEN-035", idConvocatoria: "CONV-2026-007", nombreConvocatoria: "CONCURSO DE BECAS UNMSM - 30/05/2026", dni: "78901702", estudiante: "Lucero Estefani Minaya Rosas", telefono: "981098766", nivelBeneficio: "Semi-Beca (50%)", puntaje: "91.00", puesto: 2, sede: "Sede Huánuco", directorEvaluado: "Mg. Fernando Vilchez", estadoMatricula: "Matriculado", fechaMatricula: "2026-06-01", asesorVentas: "Asesora Miriam Cruz", codigoBoleta: "B005-001099", montoPagado: 280, observaciones: "Semi-Beca 50%" },
+        { idBeneficiario: "BEN-036", idConvocatoria: "CONV-2026-007", nombreConvocatoria: "CONCURSO DE BECAS UNMSM - 30/05/2026", dni: "78901703", estudiante: "Emilio Rafael Tello Espinoza", telefono: "981098767", nivelBeneficio: "Cuarto de Beca (25%)", puntaje: "84.50", puesto: 3, sede: "Sede Huánuco", directorEvaluado: "Mg. Fernando Vilchez", estadoMatricula: "Matriculado", fechaMatricula: "2026-06-02", asesorVentas: "Asesor Jorge Ortiz", codigoBoleta: "B005-001110", montoPagado: 420, observaciones: "Cuarto Beca 25%" },
+        { idBeneficiario: "BEN-037", idConvocatoria: "CONV-2026-007", nombreConvocatoria: "CONCURSO DE BECAS UNMSM - 30/05/2026", dni: "78901704", estudiante: "Romina Jazmin Mallqui Cruz", telefono: "981098768", nivelBeneficio: "Descuento 15%", puntaje: "79.00", puesto: 4, sede: "Sede Huánuco", directorEvaluado: "Mg. Fernando Vilchez", estadoMatricula: "No Concretado", fechaMatricula: "", asesorVentas: "Asesor Jorge Ortiz", codigoBoleta: "", montoPagado: 0, observaciones: "Prefirió virtual" },
+        { idBeneficiario: "BEN-038", idConvocatoria: "CONV-2026-008", nombreConvocatoria: "RATIFICACION USM ENERO-2026", dni: "79012801", estudiante: "Guillermo Elias Zevallos Ramos", telefono: "980987654", nivelBeneficio: "Beca Completa (100%)", puntaje: "19.50", puesto: 1, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "Matriculado", fechaMatricula: "2026-01-16", asesorVentas: "Asesora Lucía Castro", codigoBoleta: "B001-002010", montoPagado: 0, observaciones: "Ratificación 100%" },
+        { idBeneficiario: "BEN-039", idConvocatoria: "CONV-2026-008", nombreConvocatoria: "RATIFICACION USM ENERO-2026", dni: "79012802", estudiante: "Fiorella Paz Lozano Viteri", telefono: "980987655", nivelBeneficio: "Semi-Beca (50%)", puntaje: "18.80", puesto: 2, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "Matriculado", fechaMatricula: "2026-01-16", asesorVentas: "Asesora Lucía Castro", codigoBoleta: "B001-002015", montoPagado: 250, observaciones: "Ratificación 50%" },
+        { idBeneficiario: "BEN-040", idConvocatoria: "CONV-2026-008", nombreConvocatoria: "RATIFICACION USM ENERO-2026", dni: "79012803", estudiante: "Victor Manuel Lujan Silva", telefono: "980987656", nivelBeneficio: "Semi-Beca (50%)", puntaje: "18.20", puesto: 3, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "Matriculado", fechaMatricula: "2026-01-17", asesorVentas: "Asesor Marco Peña", codigoBoleta: "B001-002022", montoPagado: 250, observaciones: "Ratificación 50%" },
+        { idBeneficiario: "BEN-041", idConvocatoria: "CONV-2026-008", nombreConvocatoria: "RATIFICACION USM ENERO-2026", dni: "79012804", estudiante: "Katia Solange Hurtado Soler", telefono: "980987657", nivelBeneficio: "Cuarto de Beca (25%)", puntaje: "17.90", puesto: 4, sede: "Sede Central (Santa Beatriz)", directorEvaluado: "Lic. Carlos Mendoza", estadoMatricula: "Matriculado", fechaMatricula: "2026-01-18", asesorVentas: "Asesora Diana Solano", codigoBoleta: "B001-002030", montoPagado: 375, observaciones: "Ratificación 25%" },
+        { idBeneficiario: "BEN-042", idConvocatoria: "CONV-2026-009", nombreConvocatoria: "RATIFICACION UNH MAR", dni: "70123901", estudiante: "Ruben Dario Huaman Meza", telefono: "979876543", nivelBeneficio: "Beca Completa (100%)", puntaje: "19.00", puesto: 1, sede: "Sede Huánuco", directorEvaluado: "Mg. Fernando Vilchez", estadoMatricula: "Matriculado", fechaMatricula: "2026-03-02", asesorVentas: "Asesora Miriam Cruz", codigoBoleta: "B005-000890", montoPagado: 0, observaciones: "Ratificación 100%" },
+        { idBeneficiario: "BEN-043", idConvocatoria: "CONV-2026-009", nombreConvocatoria: "RATIFICACION UNH MAR", dni: "70123902", estudiante: "Sheyla Noemi Chavez Leon", telefono: "979876544", nivelBeneficio: "Semi-Beca (50%)", puntaje: "18.50", puesto: 2, sede: "Sede Huánuco", directorEvaluado: "Mg. Fernando Vilchez", estadoMatricula: "Matriculado", fechaMatricula: "2026-03-02", asesorVentas: "Asesora Miriam Cruz", codigoBoleta: "B005-000895", montoPagado: 240, observaciones: "Ratificación 50%" },
+        { idBeneficiario: "BEN-044", idConvocatoria: "CONV-2026-009", nombreConvocatoria: "RATIFICACION UNH MAR", dni: "70123903", estudiante: "Oscar Felipe Palacios Rios", telefono: "979876545", nivelBeneficio: "Semi-Beca (50%)", puntaje: "17.90", puesto: 3, sede: "Sede Huánuco", directorEvaluado: "Mg. Fernando Vilchez", estadoMatricula: "Matriculado", fechaMatricula: "2026-03-03", asesorVentas: "Asesor Jorge Ortiz", codigoBoleta: "B005-000902", montoPagado: 240, observaciones: "Ratificación 50%" },
+        { idBeneficiario: "BEN-045", idConvocatoria: "CONV-2026-009", nombreConvocatoria: "RATIFICACION UNH MAR", dni: "70123904", estudiante: "Dora Maritza Salgado Diaz", telefono: "979876546", nivelBeneficio: "Cuarto de Beca (25%)", puntaje: "17.40", puesto: 4, sede: "Sede Huánuco", directorEvaluado: "Mg. Fernando Vilchez", estadoMatricula: "Matriculado", fechaMatricula: "2026-03-04", asesorVentas: "Asesor Jorge Ortiz", codigoBoleta: "B005-000910", montoPagado: 360, observaciones: "Ratificación 25%" }
+      ];
+
+      const porSede = [
+        { sede: "Sede San Juan de Lurigancho", director: "Ing. Jorge Huamán", totalConvocatorias: 1, otorgadas: 6, matriculados: 5, efectividad: 0.833, efectividadPorc: "83.3", cumpleMeta: true },
+        { sede: "Sede Huánuco", director: "Mg. Fernando Vilchez", totalConvocatorias: 2, otorgadas: 8, matriculados: 7, efectividad: 0.875, efectividadPorc: "87.5", cumpleMeta: true },
+        { sede: "Sede San Juan de Miraflores", director: "Lic. Elena Paredes", totalConvocatorias: 1, otorgadas: 4, matriculados: 3, efectividad: 0.750, efectividadPorc: "75.0", cumpleMeta: true },
+        { sede: "Sede Central (Santa Beatriz)", director: "Lic. Carlos Mendoza", totalConvocatorias: 3, otorgadas: 16, matriculados: 11, efectividad: 0.688, efectividadPorc: "68.8", cumpleMeta: false },
+        { sede: "Sede Los Olivos", director: "Lic. Patricia Valverde", totalConvocatorias: 2, otorgadas: 11, matriculados: 6, efectividad: 0.545, efectividadPorc: "54.5", cumpleMeta: false }
+      ];
+
+      return {
+        convocatorias: convocatorias,
+        ganadores: ganadores,
+        porSede: porSede
+      };
+    }
+  </script>
+
+</body>
+</html>
